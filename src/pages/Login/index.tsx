@@ -36,7 +36,7 @@ function Main() {
       console.log(res.status);
       const result = res.data;
       Cookies.set('accessToken', result.data.accessToken, {expires: Number(import.meta.env.VITE_APP_SESSION_TIME)});
-      Cookies.set('isTokenExpired', result.data.accessToken, {expires: Number((1 / 1440) * 10 )});
+      Cookies.set('isTokenExpired', result.data.accessToken, {expires: Number((1 / 1440) * 10 )}); 
       Cookies.set('role', JSON.stringify(result.data.role), {expires: Number(import.meta.env.VITE_APP_SESSION_TIME)});
       Cookies.set('toko', JSON.stringify(result.data.toko), {expires: Number(import.meta.env.VITE_APP_SESSION_TIME)});
       Cookies.set('paymentAccount', JSON.stringify(result.data.paymentAccount), {expires: Number(import.meta.env.VITE_APP_SESSION_TIME)});

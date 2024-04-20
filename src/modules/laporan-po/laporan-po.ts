@@ -6,4 +6,10 @@ const getDaftarTagihan = (query: IParamsQuery) => {
     .then((response) => Promise.resolve(response), (error) => Promise.reject(error));
 }
 
-export default { getDaftarTagihan }
+const getLaporanPenjualan = (query: any) => {
+    return Service.getLaporanPenjualan(query)
+    .then((response) => Promise.resolve(response), (error) => Promise.reject(error));
+}
+
+
+export default { getDaftarTagihan, getLaporanPenjualan }

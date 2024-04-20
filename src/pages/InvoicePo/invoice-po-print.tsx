@@ -13,7 +13,7 @@ const InvoicePoPrint = forwardRef((props: PropsType, ref: any) => {
   const userInfo = useAppSelector(SelectUserInfo);
 
   return (
-    <div ref={ref}>
+    <div ref={ref} style={{fontSize: '0.7rem'}}>
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'start'}}>
         <div style={{display: 'flex', gap: '25px'}}>
           <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>

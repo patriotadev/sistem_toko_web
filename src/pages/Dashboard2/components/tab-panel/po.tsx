@@ -305,13 +305,10 @@ const PoTabPanel = () => {
 
   return (
     <div className="pt-10">     
-      <h2 className="text-lg font-medium intro-y">Daftar Tagihan</h2>
+      <h2 className="text-lg font-medium intro-y">Laporan PO</h2>
       <div className="grid grid-cols-12 gap-6 mt-5">
-        <div className="flex flex-wrap items-center col-span-12 mt-2 intro-y sm:flex-nowrap gap-2">
-          {/* <Button variant="primary" className="mr-2 shadow-md" onClick={() => setTambahModalOpen(true)}>
-            Tambah Toko
-          </Button> */}
-          <Menu>
+        <div className="flex flex-wrap items-center col-span-12 mt-2 intro-y gap-2">
+          {/* <Menu>
             <Menu.Button as={Button} className="px-2 !box">
               <span className="flex items-center justify-center w-5 h-5">
                 <Lucide icon="Plus" className="w-4 h-4" />
@@ -326,8 +323,8 @@ const PoTabPanel = () => {
                 Message
               </Menu.Item>
             </Menu.Items>
-          </Menu>
-          <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-2 md:ml-0 lg:mx-2">
+          </Menu> */}
+          <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-2 md:ml-0">
             <div className="relative w-56">
               <Select placeholder='Semua PT' options={ptList} value={selectedPt} onChange={(e) => {
                 setSelectedPt(e);
@@ -342,13 +339,13 @@ const PoTabPanel = () => {
               <Lucide icon="Filter" className="w-4 h-4 mr-2" />
                 Filter
             </Button>
-            <Button variant="warning" className="ml-2 shadow-md" onClick={() => handleReset()}>
+            <Button variant="warning" className="shadow-md" onClick={() => handleReset()}>
               <Lucide icon="RotateCcw" className="w-4 h-4 mr-2" />
                 Reset
             </Button>
         </div>
          {/* BEGIN: Data List */}
-         <div className="col-span-12 overflow-auto intro-y xl:overflow-visible">
+         <div className="col-span-12 overflow-auto intro-y">
           {!isDataLoading ? <Table className="border-spacing-y-[10px] border-separate -mt-2">
             <Table.Thead>
               <Table.Tr>

@@ -102,6 +102,11 @@ const initialState: SideMenuState = {
     //   ],
     // },
     {
+      icon: "Files",
+      title: "Penjualan",
+      pathname: "/penjualan",
+    },
+    {
       icon: "Layers",
       title: "Stok Barang",
       pathname: "/stok",

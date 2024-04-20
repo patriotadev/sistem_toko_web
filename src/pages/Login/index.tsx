@@ -26,7 +26,7 @@ type LoginInputs = {
 function Main() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<LoginInputs>();
+  const { register, handleSubmit, getValues, watch, formState: { errors }, setValue } = useForm<LoginInputs>();
   
   const onSubmit: SubmitHandler<LoginInputs> = (data, e) => {
     console.log(e)
@@ -106,10 +106,11 @@ function Main() {
                 </div>
                 <div className="mt-8 intro-x">
                   <FormInput
-                    {...register("email", {required: 'Email tidak boleh kosong'})}
+                    {...register("email", {required: 'Username tidak boleh kosong'})}
                     type="text"
+                    onChange={(e) => setValue('email', (e.target.value).toUpperCase())}
                     className={`${errors.email && "border-danger"} block px-4 py-3 intro-x min-w-full xl:min-w-[350px]`}
-                    placeholder="Email"
+                    placeholder="Username"
                   />
                   {errors.email && <div className="mt-2 text-danger">
                     {errors.email.message}

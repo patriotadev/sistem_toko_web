@@ -20,26 +20,6 @@ const DetailModal = ({initialValues, isModalOpen, setIsModalOpen, handleReloadDa
     console.log(initialValues);
     const lastStepMaster = initialValues.BarangPenjualan.filter((e) => e.isMaster === true).reverse()[0];
   
-    // const handleChangeStatus = (value: string | undefined) => {
-    //   const payload: PenjualanPayload &  = {
-    //     detail: {
-    //       id: initialValues.id,
-    //       status: value ? value : initialValues.status
-    //     } as IPo,
-    //     // barangPo: initialValues.BarangPo
-    // }
-    //   PoModule.updateStatus(payload)
-    //   .then(res => res.json())
-    //   .then(result => {
-    //     if (result.code === 201) {
-    //       toast.success(result.message);
-    //     } else {
-    //       toast.error(result.message);
-    //     }
-    //     handleReloadStok();
-    //   })
-    // }
-  
     return (
       <div>
         <Dialog size="lg" open={isModalOpen} onClose={()=> {
@@ -52,11 +32,6 @@ const DetailModal = ({initialValues, isModalOpen, setIsModalOpen, handleReloadDa
                       <Lucide icon="FileText" className="w-6 h-6"/>
                       Detail Penjualan
                     </h2>
-                    {/* <Select
-                      value={selectedStatus}
-                      options={statusPoOptions}
-                      onChange={(e) => handleChangeStatus(e?.value)}
-                    /> */}
                   </Dialog.Title>
                   <Dialog.Description>
                     <div className="w-full">
@@ -133,158 +108,6 @@ const DetailModal = ({initialValues, isModalOpen, setIsModalOpen, handleReloadDa
                       </div>
                     </div>
                   </Disclosure.Group>
-                    {/* BEGIN: Recent Activities */}
-                    <div className="col-span-12 mt-3 md:col-span-6 xl:col-span-4 2xl:col-span-12">
-                      <div className="flex items-center h-10 intro-x">
-                        <h2 className="mr-5 text-lg font-medium truncate">
-                          Riwayat Surat Jalan
-                        </h2>
-                        <a href="" className="ml-auto truncate text-primary">
-                          Lihat Selengkapnya
-                        </a>
-                      </div>
-                      <div className="mt-5 relative before:block before:absolute before:w-px before:h-[85%] before:bg-slate-200 before:dark:bg-darkmode-400 before:ml-5 before:mt-5">
-                        <div className="relative flex items-center mb-3 intro-x">
-                          <div className="before:block before:absolute before:w-20 before:h-px before:bg-slate-200 before:dark:bg-darkmode-400 before:mt-5 before:ml-5">
-                            <div className="flex-none w-10 h-10 overflow-hidden rounded-full image-fit">
-                              <img
-                                alt="Midone Tailwind HTML Admin Template"
-                                src={fakerData[9].photos[0]}
-                              />
-                            </div>
-                          </div>
-                          <div className="flex-1 px-5 py-3 ml-4 box zoom-in">
-                            <div className="flex items-center">
-                              <div className="font-medium">
-                                {fakerData[9].users[0].name}
-                              </div>
-                              <div className="ml-auto text-xs text-slate-500">
-                                07:00 PM
-                              </div>
-                            </div>
-                            <div className="mt-1 text-slate-500">
-                              Has joined the team
-                            </div>
-                          </div>
-                        </div>
-                        <div className="relative flex items-center mb-3 intro-x">
-                          <div className="before:block before:absolute before:w-20 before:h-px before:bg-slate-200 before:dark:bg-darkmode-400 before:mt-5 before:ml-5">
-                            <div className="flex-none w-10 h-10 overflow-hidden rounded-full image-fit">
-                              <img
-                                alt="Midone Tailwind HTML Admin Template"
-                                src={fakerData[8].photos[0]}
-                              />
-                            </div>
-                          </div>
-                          <div className="flex-1 px-5 py-3 ml-4 box zoom-in">
-                            <div className="flex items-center">
-                              <div className="font-medium">
-                                {fakerData[8].users[0].name}
-                              </div>
-                              <div className="ml-auto text-xs text-slate-500">
-                                07:00 PM
-                              </div>
-                            </div>
-                            <div className="text-slate-500">
-                              <div className="mt-1">Added 3 new photos</div>
-                              <div className="flex mt-2">
-                                <Tippy
-                                  as="div"
-                                  className="w-8 h-8 mr-1 image-fit zoom-in"
-                                  content={fakerData[0].products[0].name}
-                                >
-                                  <img
-                                    alt="Midone Tailwind HTML Admin Template"
-                                    className="border border-white rounded-md"
-                                    src={fakerData[8].images[0]}
-                                  />
-                                </Tippy>
-                                <Tippy
-                                  as="div"
-                                  className="w-8 h-8 mr-1 image-fit zoom-in"
-                                  content={fakerData[1].products[0].name}
-                                >
-                                  <img
-                                    alt="Midone Tailwind HTML Admin Template"
-                                    className="border border-white rounded-md"
-                                    src={fakerData[8].images[1]}
-                                  />
-                                </Tippy>
-                                <Tippy
-                                  as="div"
-                                  className="w-8 h-8 mr-1 image-fit zoom-in"
-                                  content={fakerData[2].products[0].name}
-                                >
-                                  <img
-                                    alt="Midone Tailwind HTML Admin Template"
-                                    className="border border-white rounded-md"
-                                    src={fakerData[8].images[2]}
-                                  />
-                                </Tippy>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="my-4 text-xs text-center intro-x text-slate-500">
-                          12 November
-                        </div>
-                        <div className="relative flex items-center mb-3 intro-x">
-                          <div className="before:block before:absolute before:w-20 before:h-px before:bg-slate-200 before:dark:bg-darkmode-400 before:mt-5 before:ml-5">
-                            <div className="flex-none w-10 h-10 overflow-hidden rounded-full image-fit">
-                              <img
-                                alt="Midone Tailwind HTML Admin Template"
-                                src={fakerData[7].photos[0]}
-                              />
-                            </div>
-                          </div>
-                          <div className="flex-1 px-5 py-3 ml-4 box zoom-in">
-                            <div className="flex items-center">
-                              <div className="font-medium">
-                                {fakerData[7].users[0].name}
-                              </div>
-                              <div className="ml-auto text-xs text-slate-500">
-                                07:00 PM
-                              </div>
-                            </div>
-                            <div className="mt-1 text-slate-500">
-                              Has changed{" "}
-                              <a className="text-primary" href="">
-                                {fakerData[7].products[0].name}
-                              </a>{" "}
-                              price and description
-                            </div>
-                          </div>
-                        </div>
-                        <div className="relative flex items-center mb-3 intro-x">
-                          <div className="before:block before:absolute before:w-20 before:h-px before:bg-slate-200 before:dark:bg-darkmode-400 before:mt-5 before:ml-5">
-                            <div className="flex-none w-10 h-10 overflow-hidden rounded-full image-fit">
-                              <img
-                                alt="Midone Tailwind HTML Admin Template"
-                                src={fakerData[6].photos[0]}
-                              />
-                            </div>
-                          </div>
-                          <div className="flex-1 px-5 py-3 ml-4 box zoom-in">
-                            <div className="flex items-center">
-                              <div className="font-medium">
-                                {fakerData[6].users[0].name}
-                              </div>
-                              <div className="ml-auto text-xs text-slate-500">
-                                07:00 PM
-                              </div>
-                            </div>
-                            <div className="mt-1 text-slate-500">
-                              Has changed{" "}
-                              <a className="text-primary" href="">
-                                {fakerData[6].products[0].name}
-                              </a>{" "}
-                              description
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    {/* END: Recent Activities */}
                   </Dialog.Description>
                   <Dialog.Footer>
                       <Button type="button" variant="secondary" onClick={()=> {

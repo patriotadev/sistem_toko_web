@@ -1502,7 +1502,7 @@ const ActionButtons = ({
         <Lucide icon="View" className="w-4 h-4 mr-1" />{" "}
         Detail
       </a>
-      <a
+      {/* <a
           className="flex items-center mr-3"
           href="#"
           onClick={(event) => {
@@ -1511,7 +1511,7 @@ const ActionButtons = ({
           }}
         >
       <Lucide icon="RotateCcw" className="w-4 h-4 mr-1" /> Batal
-      </a>
+      </a> */}
       <a className="flex items-center mr-3" href="#" onClick={handlePrint}>
         <Lucide icon="Printer" className="w-4 h-4 mr-1" />{" "}
         Print
@@ -1739,12 +1739,12 @@ function Main () {
       />
       <h2 className="mt-10 text-lg font-medium intro-y">Daftar Surat Jalan PO</h2>
       <div className="grid grid-cols-12 gap-6 mt-14 lg:mt-5">
-        <div className="flex flex-wrap items-center col-span-12 mt-2 intro-y sm:flex-nowrap gap-2">
+        <div className="flex flex-wrap items-center col-span-12 mt-2 intro-y gap-2">
           <div className="-mt-11 flex gap-2">
-          <Button variant="primary" className="mr-2 shadow-md" onClick={() => setIsModalOpen(true)}>
+          <Button variant="primary" className="shadow-md" onClick={() => setIsModalOpen(true)}>
             Tambah Surat Jalan
           </Button>
-          <Menu>
+          {/* <Menu>
             <Menu.Button as={Button} className="px-2 !box">
               <span className="flex items-center justify-center w-5 h-5">
                 <Lucide icon="Plus" className="w-4 h-4" />
@@ -1763,17 +1763,17 @@ function Main () {
                 PDF
               </Menu.Item>
             </Menu.Items>
-          </Menu>
+          </Menu> */}
           </div>
           <div className="flex flex-col gap-2">
-            <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-2 md:ml-0 lg:mx-2">
+            <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-2 md:ml-0">
               <div className="relative w-56">
                 <Select placeholder='Semua Status' options={StatusList} value={selectedStatus} onChange={(e) => {
                   setSelectedStatus(e);
                 }}  />
               </div>
             </div>
-            <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-2 md:ml-0 lg:mx-2">
+            <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-2 md:ml-0">
               <div className="relative w-56">
               <AsyncSelect 
                 placeholder='Semua PO'
@@ -1789,7 +1789,7 @@ function Main () {
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-2 md:ml-0 lg:mx-2">
+            <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-2 md:ml-0">
               <div className="relative w-56">
                 <Select placeholder='Semua PT' options={ptList} value={selectedPt} onChange={(e) => {
                 setSelectedPt(e);
@@ -1800,13 +1800,13 @@ function Main () {
                 }} />
               </div>
             </div>
-            <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-2 md:ml-0 lg:mx-2">
+            <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-2 md:ml-0">
               <div className="relative w-56">
                 <Select placeholder='Semua Project' isDisabled={!selectedPt} options={projectList} value={selectedProject} onChange={(e) => setSelectedProject(e)} />
               </div>
             </div>
           </div>
-          <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-2 md:ml-0 lg:mx-2 lg:-mt-11">
+          <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-2 md:ml-0 lg:-mt-11">
             <div className="relative w-56 text-slate-500">
               <FormInput
                 value={search}
@@ -1825,13 +1825,13 @@ function Main () {
             <Lucide icon="Filter" className="w-4 h-4 mr-2" />
               Filter
           </Button>
-          <Button variant="warning" className="ml-1 shadow-md lg:-mt-11" onClick={() => handleReset()}>
+          <Button variant="warning" className="shadow-md lg:-mt-11" onClick={() => handleReset()}>
             <Lucide icon="RotateCcw" className="w-4 h-4 mr-2" />
               Reset
           </Button>
         </div>
         {/* BEGIN: Data List */}
-        <div className="col-span-12 overflow-auto intro-y xl:overflow-visible xl:overflow-visible">
+        <div className="col-span-12 overflow-auto intro-y">
           {!isDataLoading ? <Table className="border-spacing-y-[10px] border-separate -mt-2">
             <Table.Thead>
               <Table.Tr>
@@ -1870,9 +1870,6 @@ function Main () {
                   <Table.Td className="first:rounded-l-md last:rounded-r-md text-start bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
                     {item.namaSupir}
                   </Table.Td>
-                  {/* <Table.Td className="first:rounded-l-md last:rounded-r-md text-start bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
-                    {item.BarangSuratJalanPo.length}
-                  </Table.Td> */}
                   <Table.Td className="first:rounded-l-md last:rounded-r-md text-start bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
                     {item.createdBy}
                   </Table.Td>
@@ -1881,7 +1878,9 @@ function Main () {
                   </Table.Td>
                   <Table.Td className="first:rounded-l-md last:rounded-r-md text-start bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
                     {item.InvoicePo.length > 0 ? <Button variant="outline-success" size='sm' data-tooltip={`tooltip-content-${index}`}>Sudah Invoice</Button> : <Button variant="outline-primary" size='sm'>Belum Invoice</Button>}
-                    <InvoiceDetail item={item} index={index} />
+                    <div className="hidden">
+                      <InvoiceDetail item={item} index={index} />
+                    </div>
                   </Table.Td>
                   <Table.Td className="first:rounded-l-md last:rounded-r-md w-56 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400">
                     <ActionButtons

@@ -9,4 +9,13 @@ const getDaftarTagihan = (query: IParamsQuery) => {
     });
 }
 
-export default { getDaftarTagihan };
+const getLaporanPenjualan = (query: any) => {
+    const filterQuery = `dateStart=${query.dateStart}&dateEnd=${query.dateEnd}&tokoId=${query.tokoId}`;
+    return axiosInstance({
+        method: 'get',
+        url: `/laporan-po/penjualan?${filterQuery}`,
+    });
+}
+
+
+export default { getDaftarTagihan, getLaporanPenjualan };

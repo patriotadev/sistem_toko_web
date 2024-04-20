@@ -1783,11 +1783,11 @@ function Main () {
       />
       <h2 className="mt-10 text-lg font-medium intro-y">Daftar PO</h2>
       <div className="grid grid-cols-12 gap-6 mt-5">
-        <div className="flex flex-wrap items-center col-span-12 mt-2 intro-y sm:flex-nowrap gap-2">
-          <Button variant="primary" className="mr-2 shadow-md" onClick={() => setIsModalOpen(true)}>
+        <div className="flex flex-wrap items-center col-span-12 mt-2 intro-y gap-2">
+          <Button variant="primary" className="shadow-md" onClick={() => setIsModalOpen(true)}>
             Tambah PO
           </Button>
-          <Menu>
+          {/* <Menu>
             <Menu.Button as={Button} className="px-2 !box">
               <span className="flex items-center justify-center w-5 h-5">
                 <Lucide icon="Plus" className="w-4 h-4" />
@@ -1806,8 +1806,8 @@ function Main () {
                 PDF
               </Menu.Item>
             </Menu.Items>
-          </Menu>
-          <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-2 md:ml-0 lg:mx-2">
+          </Menu> */}
+          <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-2 md:ml-0">
             <div className="relative w-56">
               <FormSelect value={selectedStatus} onChange={(e: ChangeEvent) => setSelectedStatus((e.target as HTMLSelectElement).value)}>
                 <option value='all'>Pilih Status</option>
@@ -1817,7 +1817,7 @@ function Main () {
               </FormSelect>
             </div>
           </div>
-          <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-2 md:ml-0 lg:mx-2">
+          <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-2 md:ml-0">
             <div className="relative w-56">
               <Select placeholder='Semua PT' options={ptList} value={selectedPt} onChange={(e) => {
                 setSelectedPt(e);
@@ -1828,7 +1828,7 @@ function Main () {
               }} />
             </div>
           </div>
-          <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-2 md:ml-0 lg:mx-2">
+          <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-2 md:ml-0">
             <div className="relative w-56">
             <Select placeholder='Semua Project' isDisabled={!selectedPt} options={projectList} value={selectedProject} onChange={(e) => setSelectedProject(e)} />
             </div>
@@ -1852,13 +1852,13 @@ function Main () {
             <Lucide icon="Filter" className="w-4 h-4 mr-2" />
               Filter
           </Button>
-          <Button variant="warning" className="ml-1 shadow-md" onClick={() => handleReset()}>
+          <Button variant="warning" className="shadow-md" onClick={() => handleReset()}>
             <Lucide icon="RotateCcw" className="w-4 h-4 mr-2" />
               Reset
           </Button>
         </div>
         {/* BEGIN: Data List */}
-        <div className="col-span-12 overflow-auto intro-y xl:overflow-visible ">
+        <div className="col-span-12 overflow-auto intro-y ">
           {!isDataLoading ? <Table className="border-spacing-y-[10px] border-separate -mt-2">
             <Table.Thead>
               <Table.Tr>
@@ -1914,16 +1914,18 @@ function Main () {
                   </Table.Td>
                   <Table.Td className="first:rounded-l-md last:rounded-r-md text-start bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
                     {
-                      item.status === 'Belum Diambil' || item.status === 'Sudah Diambil' ? <Badge color='primary'>
+                      item.status === 'Belum Diambil' || item.status === 'Sudah Diambil' ? <Button size="sm" variant='outline-primary'>
                       {item.status}
-                      </Badge> : item.PembayaranPo[0]?.totalPembayaran === item.PembayaranPo[0]?.jumlahBayar ? <Badge color='success' >Sudah Lunas</Badge> : <Badge color='danger' >Belum Lunas</Badge>
+                      </Button> : item.PembayaranPo[0]?.totalPembayaran === item.PembayaranPo[0]?.jumlahBayar ? <Button size="sm" variant='outline-success' >Sudah Lunas</Button> : <Button size="sm" variant='outline-danger' >Belum Lunas</Button>
                     }
                   </Table.Td>
                   <Table.Td className="first:rounded-l-md last:rounded-r-md text-start bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
                     {
                       <Button variant='outline-primary' size="sm" data-tooltip={`tooltip-content-${index}`}>{item.statusSJ}</Button>
                     }
-                    <SuratJalanDetail item={item.SuratJalanPo} index={index} />
+                    <div className="hidden">
+                      <SuratJalanDetail item={item.SuratJalanPo} index={index} />
+                    </div>
                   </Table.Td>
                   <Table.Td className="first:rounded-l-md last:rounded-r-md w-56 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400">
                     <ActionButtons

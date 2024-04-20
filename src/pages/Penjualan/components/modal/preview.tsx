@@ -18,6 +18,9 @@ import { thousandLimiter } from '../../../../helpers/helper';
 import Lucide from '../../../../base-components/Lucide';
 import { IStok } from '../../../../modules/stok/interfaces/stok.interface';
 import Stepper from '../stepper/stepper';
+import { AxiosResponse } from 'axios';
+import PrintConfirmation from './print-confirmation';
+import { IPenjualan } from '../../../../modules/penjualan/interfaces/penjualan.interface';
 
 type PreviewModalProps = {
     handleReloadData: () => void
@@ -70,6 +73,8 @@ const PreviewModal = ({
         tokoId: Yup.string().required('Lokasi toko tidak boleh kosong'),
       });
       const { register, handleSubmit, setValue, getValues, reset, formState: {errors, isValid}, watch } = useForm<any>();
+      const [ printValues, setPrintValues ] = useState<IPenjualan>();
+      const [printType, setPrintType] = useState<string>();
 
       console.log(pembayaranData);
   
@@ -92,10 +97,15 @@ const PreviewModal = ({
             console.log(payload);
             setIsSubmitLoading(true);
             PenjualanModule.create(payload)
-            .then(res => res.json())
-            .then(result => {
+            .then((res: AxiosResponse) => {
+              const result = res.data;
                 if (result.code === 201) {
-                    toast.success(result.message)
+                    toast.success(result.message);
+                    setPrintType('New')
+                    setPrintValues({
+                      ...detailData,
+                      BarangPenjualan: [...barangData]
+                    })
                 } else {
                     toast.error(result.message);
                 }
@@ -111,7 +121,10 @@ const PreviewModal = ({
   
       return (
         <div>
-          <Dialog size="lg" open={isModalOpen} onClose={()=> {
+          {
+            printValues && printType && <PrintConfirmation initialValues={printValues} type={printType} />
+          }
+          <Dialog size="xl" open={isModalOpen} onClose={()=> {
               setIsModalOpen(false);
               }}
               >

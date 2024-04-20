@@ -17,6 +17,9 @@ import { useAppSelector } from '../../../../stores/hooks';
 import toast from 'react-hot-toast';
 import { APPROVAL_OPTION } from '../../const/approval-option';
 import { setValue } from '../../../../base-components/Litepicker/litepicker';
+import { AxiosResponse } from 'axios';
+import * as Yup from 'yup';
+import { ColumnCalcsModule } from 'tabulator-tables';
 
 type PembayaranDetailModalProps = {
     initialValues: IPenjualan,
@@ -28,29 +31,9 @@ type PembayaranDetailModalProps = {
 const PembayaranDetailModal = ({initialValues, isModalOpen, setIsModalOpen, handleReloadData}: PembayaranDetailModalProps) => {
     console.log(initialValues);
     const userInfo = useAppSelector(SelectUserInfo);
-    const lastStepMaster = initialValues.BarangPenjualan.filter((e) => e.isMaster === true).reverse()[0];
-    const { register, reset, handleSubmit } = useForm<any>();
+    const { register, reset, handleSubmit, formState: {errors}, setError } = useForm<any>();
     const [selectedPembayaran, setSelectedPembayaran] = useState<string>();
     const [selectedApproval, setSelectedApproval] = useState<boolean|null>();
-    // const handleChangeStatus = (value: string | undefined) => {
-    //   const payload: PenjualanPayload &  = {
-    //     detail: {
-    //       id: initialValues.id,
-    //       status: value ? value : initialValues.status
-    //     } as IPo,
-    //     // barangPo: initialValues.BarangPo
-    // }
-    //   PoModule.updateStatus(payload)
-    //   .then(res => res.json())
-    //   .then(result => {
-    //     if (result.code === 201) {
-    //       toast.success(result.message);
-    //     } else {
-    //       toast.error(result.message);
-    //     }
-    //     handleReloadStok();
-    //   })
-    // }
 
     const onSubmit: SubmitHandler<any> = (data) => {
         const payload = {
@@ -75,15 +58,15 @@ const PembayaranDetailModal = ({initialValues, isModalOpen, setIsModalOpen, hand
 
         console.log(payload);
         PenjualanModule.updatePembayaran(payload)
-        .then(res => res.json())
-        .then(result => {
-            if (result.code === 200) {
-                toast.success(result.message)
-            } else {
-                toast.error(result.message);
-            }
-            handleReloadData();
-            reset();
+        .then((res: AxiosResponse) => {
+          const result = res.data;
+          if (result.code === 200) {
+              toast.success(result.message)
+          } else {
+              toast.error(result.message);
+          }
+          handleReloadData();
+          reset();
         });
     }
 
@@ -95,7 +78,7 @@ const PembayaranDetailModal = ({initialValues, isModalOpen, setIsModalOpen, hand
   
     return (
       <div>
-        <Dialog size="lg" open={isModalOpen} onClose={()=> {
+        <Dialog size="xl" open={isModalOpen} onClose={()=> {
               setIsModalOpen(false);
               }}
               >
@@ -149,9 +132,6 @@ const PembayaranDetailModal = ({initialValues, isModalOpen, setIsModalOpen, hand
                             {
                                 APPROVAL_OPTION.map((item) => <option selected={initialValues?.PembayaranPenjualan[0]?.isApprove === Boolean(item.value)} value={item.value}>{item.label}</option> )
                             }
-                                {/* <option value='Bayar Lunas'>Bayar Lunas</option>
-                                <option value='COD (Cash on Delivery)'>COD (Cash on Delivery)</option>
-                                <option value='Cicilan / Hutang'>Cicilan / Hutang</option> */}
                             </FormSelect>
                         </div>
                     }
@@ -164,9 +144,6 @@ const PembayaranDetailModal = ({initialValues, isModalOpen, setIsModalOpen, hand
                             {
                                 PEMBAYARAN_OPTION.map((item) => <option selected={selectedPembayaran === item.value} value={item.value}>{item.label}</option> )
                             }
-                                {/* <option value='Bayar Lunas'>Bayar Lunas</option>
-                                <option value='COD (Cash on Delivery)'>COD (Cash on Delivery)</option>
-                                <option value='Cicilan / Hutang'>Cicilan / Hutang</option> */}
                             </FormSelect>
                         </div>
                         {

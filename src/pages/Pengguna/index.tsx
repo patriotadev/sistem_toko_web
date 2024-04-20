@@ -116,11 +116,11 @@ function Main() {
       />
       <h2 className="mt-10 text-lg font-medium intro-y">Daftar Pengguna</h2>
       <div className="grid grid-cols-12 gap-6 mt-5">
-        <div className="flex flex-wrap items-center col-span-12 mt-2 intro-y sm:flex-nowrap gap-2">
-          <Button variant="primary" className="mr-2 shadow-md" onClick={() => setTambahModalOpen(true)}>
+        <div className="flex flex-wrap items-center col-span-12 mt-2 intro-y gap-2">
+          <Button variant="primary" className="shadow-md" onClick={() => setTambahModalOpen(true)}>
             Tambah Pengguna
           </Button>
-          <Menu>
+          {/* <Menu>
             <Menu.Button as={Button} className="px-2 !box">
               <span className="flex items-center justify-center w-5 h-5">
                 <Lucide icon="Plus" className="w-4 h-4" />
@@ -135,7 +135,7 @@ function Main() {
                 Message
               </Menu.Item>
             </Menu.Items>
-          </Menu>
+          </Menu> */}
           <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-auto md:ml-0">
             <div className="relative w-56 text-slate-500">
               <FormInput
@@ -155,7 +155,7 @@ function Main() {
               <Lucide icon="Filter" className="w-4 h-4 mr-2" />
                 Filter
             </Button>
-            <Button variant="warning" className="ml-2 shadow-md" onClick={() => handleReset()}>
+            <Button variant="warning" className="shadow-md" onClick={() => handleReset()}>
               <Lucide icon="RotateCcw" className="w-4 h-4 mr-2" />
                 Reset
             </Button>

@@ -9,21 +9,26 @@ import { useMemo } from "react";
 interface MainProps extends React.ComponentPropsWithoutRef<"canvas"> {
   width: number;
   height: number;
+  dataValue: any[];
 }
 
 function Main(props: MainProps) {
   const colorScheme = useAppSelector(selectColorScheme);
   const darkMode = useAppSelector(selectDarkMode);
 
-  const chartData = [15, 10, 65];
+  const tempData: number[] = [];
+  props?.dataValue?.map((dv) => tempData.push(dv.sum));
+  const chartData = props?.dataValue?.map((dv) => dv.sum);
   const chartColors = () => [
-    getColor("pending", 0.9),
-    getColor("warning", 0.9),
     getColor("primary", 0.9),
+    getColor("pending", 0.9),
+    getColor("info", 0.9),
+    getColor("warning", 0.9),
+    getColor("secondary", 0.9),
   ];
   const data: ChartData = useMemo(() => {
     return {
-      labels: ["Yellow", "Dark"],
+      labels: props?.dataValue?.map((dv) => dv.stokName),
       datasets: [
         {
           data: chartData,

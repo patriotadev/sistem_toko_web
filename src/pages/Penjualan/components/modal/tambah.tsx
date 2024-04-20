@@ -70,6 +70,13 @@ const TambahModal = ({
             createdBy: userInfo.name
         });
       }
+
+
+      useEffect(() => {
+        if (isModalOpen) {
+            reset();
+        }
+      }, [isModalOpen]);
   
       return (
         <div>
@@ -124,7 +131,7 @@ const TambahModal = ({
             // setTotalPembayaran={setTotalPembayaran}
           />
 
-          <Dialog size="lg" open={isModalOpen} onClose={()=> {
+          <Dialog size="xl" open={isModalOpen} onClose={()=> {
               setIsModalOpen(false);
               }}
               >

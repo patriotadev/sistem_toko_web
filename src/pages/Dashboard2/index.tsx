@@ -26,6 +26,7 @@ import PoImage from "../../assets/images/box.png";
 import MasterImage from "../../assets/images/stocks.png";
 import PenjualanImage from "../../assets/images/shopping-list.png";
 import StokImage from "../../assets/images/packages.png";
+import PenjualanTabPanel from "./components/tab-panel/penjualan";
 
 function Main() {
   const [salesReportFilter, setSalesReportFilter] = useState<string>();
@@ -105,10 +106,10 @@ function Main() {
                     <PoTabPanel/>
                   </Tab.Panel>
                   <Tab.Panel className="leading-relaxed">
-                   
+                   <PenjualanTabPanel/>
                   </Tab.Panel>
                   <Tab.Panel className="leading-relaxed">
-                
+                  
                   </Tab.Panel>
               </Tab.Panels>
           </Tab.Group>

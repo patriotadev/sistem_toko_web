@@ -21,6 +21,7 @@ import { TokoOptionType } from "./types/penjualan.type";
 import moment from "moment";
 import { thousandLimiter } from "../../helpers/helper";
 import { AxiosResponse } from "axios";
+import PrintConfirmation from "./components/modal/print-confirmation";
 
 function Main() {
   const [totalCount, setTotalCount] = useState<number>(0);
@@ -42,6 +43,17 @@ function Main() {
 
 
   const handleReloadData = () => {
+    setIsRefreshData(!isRefreshData);
+  }
+
+  const handleReset = () => {
+    setToko({
+      label: 'Semua Toko',
+      value: 'all'
+    });
+    setDateStart(null);
+    setDateEnd(null);
+    setSearch("");
     setIsRefreshData(!isRefreshData);
   }
 
@@ -67,34 +79,17 @@ function Main() {
       tokoId,
     };
 
-    if (search) {
-      setTimeout(() => {
-      PenjualanModule.get(params)
-      .then(res => res.json())
-      .then(result => {
-        console.log(result.data);
-        setPenjualanList(result.data);
-        // setPage(result.document.currentPage);
-        // setPerPage(result.document.perPage);
-        console.log(result.data);
-        setTotalCount(result.document.totalCount);
-        setTotalPages(result.document.totalPages);
-      })
-      .finally(() => setIsDataLoading(false));
-      }, 1000)
-    } else {
-      PenjualanModule.get(params)
-      .then(res => res.json())
-      .then(result => {
-        console.log(result.data);
-        setPenjualanList(result.data);
-        // setPage(result.document.currentPage);
-        // setPerPage(result.document.perPage);
-        setTotalCount(result.document.totalCount);
-        setTotalPages(result.document.totalPages);
-      })
-      .finally(() => setIsDataLoading(false));
-    }
+    PenjualanModule.get(params)
+    .then((res: AxiosResponse) => {
+      const result = res.data;
+      console.log(result.data);
+      setPenjualanList(result.data);
+      // setPage(result.document.currentPage);
+      // setPerPage(result.document.perPage);
+      setTotalCount(result.document.totalCount);
+      setTotalPages(result.document.totalPages);
+    })
+    .finally(() => setIsDataLoading(false));
   }
 
   const fetchTokoData = () => {
@@ -114,17 +109,15 @@ function Main() {
   }
 
   const onChangeDateFilter = (dates: any) => {
+    console.log(dates);
     const [start, end] = dates;
     setDateStart(start);
     setDateEnd(end);
   }
 
-  console.log({dateStart})
-  console.log({dateEnd})
-
   useEffect(() => {
     fetchPenjualanData(search, page, perPage, dateStart, dateEnd, toko?.value);
-  }, [isRefreshData, search, page, perPage, toko, dateEnd]);
+  }, [isRefreshData, page, perPage]);
 
   useEffect(() => {
     fetchTokoData();
@@ -141,11 +134,11 @@ function Main() {
       />
       <h2 className="mt-10 text-lg font-medium intro-y">Daftar Penjualan</h2>
       <div className="grid grid-cols-12 gap-6 mt-5">
-        <div className="flex flex-wrap items-center col-span-12 mt-2 intro-y sm:flex-nowrap gap-2">
-          <Button variant="primary" className="mr-2 shadow-md" onClick={() => setTambahModalOpen(true)}>
+        <div className="flex flex-wrap items-center col-span-12 mt-2 intro-y gap-2">
+          <Button variant="primary" className="shadow-md" onClick={() => setTambahModalOpen(true)}>
             Tambah Penjualan
           </Button>
-          <Menu>
+          {/* <Menu>
             <Menu.Button as={Button} className="px-2 !box">
               <span className="flex items-center justify-center w-5 h-5">
                 <Lucide icon="Plus" className="w-4 h-4" />
@@ -160,13 +153,14 @@ function Main() {
                 Message
               </Menu.Item>
             </Menu.Items>
-          </Menu>
-          <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-auto md:ml-0">
+          </Menu> */}
+          <div className="w-full sm:w-auto sm:mt-0 sm:ml-auto md:ml-0">
             <div className="relative w-56 text-slate-500">
               <FormInput
+                value={search}
                 type="text"
                 className="w-56 pr-10 !box"
-                placeholder="Cari..."
+                placeholder="Cari nomor penjualan.."
                 onChange={(e) => handleSearch(e)}
               />
               <Lucide
@@ -175,8 +169,7 @@ function Main() {
               />
             </div>
           </div>
-
-          <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-auto md:ml-0">
+          <div className="w-full sm:w-auto sm:mt-0 sm:ml-auto md:ml-0">
             <div className="relative w-56 text-slate-500">
               <Select 
                 onChange={(e) => setToko(e)}
@@ -185,10 +178,10 @@ function Main() {
               />
             </div>
           </div>
-          <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-auto md:ml-0">
+          <div className="w-full sm:w-auto sm:mt-0 sm:ml-auto md:ml-0">
             <div className="relative w-56 text-slate-500">
               <DatePicker
-                className="h-9 rounded-md border-slate-400 text-sm"
+                className="h-9 w-56 rounded-md border-slate-400 text-sm"
                 selected={dateStart}
                 onChange={onChangeDateFilter}
                 startDate={dateStart}
@@ -198,9 +191,17 @@ function Main() {
               />
             </div>
           </div>
+          <Button variant="primary" className="shadow-md" onClick={() => handleReloadData()}>
+            <Lucide icon="Filter" className="w-4 h-4 mr-2" />
+              Filter
+          </Button>
+          <Button variant="warning" className="shadow-md" onClick={() => handleReset()}>
+            <Lucide icon="RotateCcw" className="w-4 h-4 mr-2" />
+              Reset
+          </Button>
         </div>
          {/* BEGIN: Data List */}
-         <div className="col-span-12 overflow-auto intro-y xl:overflow-visible ">
+         <div className="col-span-12 overflow-auto intro-y ">
           {!isDataLoading ? <Table className="border-spacing-y-[10px] border-separate -mt-2">
             <Table.Thead>
               <Table.Tr>

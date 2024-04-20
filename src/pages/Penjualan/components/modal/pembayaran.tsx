@@ -1,7 +1,4 @@
 import React, { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react';
-import TokoModule from '../../../../modules/toko/toko';
-import StokModule from '../../../../modules/stok/stok';
-import PenjualanModule from '../../../../modules/penjualan/penjualan';
 import { useAppSelector } from '../../../../stores/hooks';
 import { SelectUserInfo } from '../../../../stores/common/userInfoSlice';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -9,14 +6,7 @@ import { Dialog, Disclosure } from '../../../../base-components/Headless';
 import { FormInput, FormLabel, FormSelect } from '../../../../base-components/Form';
 import Button from '../../../../base-components/Button';
 import LoadingIcon from '../../../../base-components/LoadingIcon';
-import * as Yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import toast from 'react-hot-toast';
-import Select, { SingleValue } from 'react-select';
-import { StokOptionType, TokoOptionType } from '../../types/penjualan.type';
 import { thousandLimiter } from '../../../../helpers/helper';
-import Lucide from '../../../../base-components/Lucide';
-import { IStok } from '../../../../modules/stok/interfaces/stok.interface';
 import Stepper from '../stepper/stepper';
 import { PEMBAYARAN_OPTION } from '../../const/pembayaran-option';
 
@@ -32,27 +22,12 @@ type PembayaranModalProps = {
     setStep: Dispatch<SetStateAction<number>>
     barangData: any
     setPembayaranData: Dispatch<SetStateAction<any>>
-    // setMetodePembayaran: Dispatch<SetStateAction<string|undefined>>
-    // setJumlahBayar: Dispatch<SetStateAction<number|undefined>>
-    // setTotalPembayaran: Dispatch<SetStateAction<number|undefined>>
-}
-
-type FormInputs = {
-    nama: []
-    qty: []
-    satuan: []
-    discount: []
-    harga: []
-    jumlahHarga: []
 }
 
 const PembayaranModal = ({
-    handleReloadData,
     isModalOpen,
     setIsModalOpen,
-    isPreviewOpen,
     setIsPreviewOpen,
-    isBarangOpen,
     setIsBarangOpen,
     step,
     setStep,
@@ -63,18 +38,11 @@ const PembayaranModal = ({
       const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
       const [selectedPembayaran, setSelectedPembayaran] = useState<string|null>();
       const [totalBayar, setTotalBayar] = useState<number>(0);
-      const formSchema = Yup.object().shape({
-        namaPelanggan: Yup.string().required('Nama pelanggan tidak boleh kosong'),
-        alamatPelanggan: Yup.string().required('Alamat pelanggan tidak boleh kosong'),
-        kontakPelanggan: Yup.string().required('Kontak pelanggan tidak boleh kosong'),
-        tokoId: Yup.string().required('Lokasi toko tidak boleh kosong'),
-      });
-      const { register, handleSubmit, setValue, getValues, reset, formState: {errors, isValid}, watch } = useForm<any>();
-
-      console.log('previeww');
+      const { register, handleSubmit, setValue, getValues, reset, formState: {errors, isValid}, watch, setError, clearErrors } = useForm<any>();
+      const typedErrors = errors as { [key: string]: any };
   
       const onSubmit: SubmitHandler<any> = (data) => {
-        console.log("pembayaran data==>", data);
+        console.log(selectedPembayaran);
         if (selectedPembayaran) {
           const temp: any = {};
           temp.metodePembayaran = selectedPembayaran;
@@ -85,10 +53,10 @@ const PembayaranModal = ({
           } else {
             temp.isApprove = getValues('approval');
           }
-          if (Number(getValues('dp')) > 0) {
+          if (getValues('dp') && Number(getValues('dp')) > 0) {
             temp.jumlahBayar = getValues('dp');
           } else {
-            temp.jumlahBayar = totalBayar;
+            temp.jumlahBayar = 0;
           }
           temp.totalBayar = totalBayar;
           setPembayaranData(temp);
@@ -96,6 +64,9 @@ const PembayaranModal = ({
           setIsModalOpen(false);
           setIsPreviewOpen(true)
         }
+        // else {
+        //   setError('metodePembayaran', { message: 'Metode pembayaran harus dipilih dulu ya..' })
+        // }
       }
 
       watch('dp');
@@ -115,7 +86,7 @@ const PembayaranModal = ({
   
       return (
         <div>
-          <Dialog size="lg" open={isModalOpen} onClose={()=> {
+          <Dialog size="xl" open={isModalOpen} onClose={()=> {
               setIsModalOpen(false);
               }}
               >
@@ -129,7 +100,6 @@ const PembayaranModal = ({
                   <Dialog.Description>
                   <Stepper step={step} />
                 <div className="mt-8 flex justify-center flex-wrap items-center mx-auto w-full  font-semibold text-xl">
-                  {/* <Lucide icon="CheckCircle" className="w-8 h-8 mr-2 text-success" /> */}
                   Pembayaran
                   <hr/>
                 </div>
@@ -140,7 +110,7 @@ const PembayaranModal = ({
                   </div>
                   <div className="mt-4">
                     <FormLabel htmlFor="modal-form-6">Metode Pembayaran</FormLabel>
-                    <FormSelect onChange={(e) => {
+                    <FormSelect className={`my-2 ${errors.metodePembayaran ? "border-danger": ""}`} onChange={(e) => {
                       setSelectedPembayaran(e.target.value);
                       if (e.target.value === 'COD (Cash on Delivery)') {
                         setValue('approval', false);
@@ -149,13 +119,14 @@ const PembayaranModal = ({
                       }
                     }}>
                       {
-                        PEMBAYARAN_OPTION.map((item) => <option value={item.value}>{item.label}</option> )
+                        PEMBAYARAN_OPTION.map((item) => <option selected={item.label === selectedPembayaran} value={item.value}>{item.label}</option> )
                       }
-                        {/* <option value=''>-- Metode --</option>
-                        <option value='Bayar Lunas'>Bayar Lunas</option>
-                        <option value='COD (Cash on Delivery)'>COD (Cash on Delivery)</option>
-                        <option value='Cicilan / Hutang'>Cicilan / Hutang</option> */}
                     </FormSelect>
+                    {errors.metodePembayaran && 
+                      <div className="text-danger">
+                          {typedErrors.metodePembayaran.message}
+                      </div>
+                    }
                   </div>
                   {
                     selectedPembayaran === 'Cicilan / Hutang' &&
@@ -170,7 +141,7 @@ const PembayaranModal = ({
                   </Dialog.Description>
                   <Dialog.Footer>
                       <Button type="button" variant="outline-secondary" onClick={()=> {
-                          setStep(3);
+                          setStep(2);
                           setIsModalOpen(false);
                           setIsBarangOpen(true);
                           setSelectedPembayaran(null);

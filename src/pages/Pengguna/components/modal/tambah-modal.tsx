@@ -44,7 +44,7 @@ const TambahModal = ({
       const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
       const formSchema = Yup.object().shape({
         name: Yup.string().required('Nama pengguna tidak boleh kosong'),
-        email: Yup.string().required('Email pengguna tidak boleh kosong'),
+        email: Yup.string().required('Username tidak boleh kosong'),
         password: Yup.string().required('Password pengguna tidak boleh kosong'),
         roleId: Yup.string().required('Role pengguna tidak boleh kosong'),
         tokoId: Yup.string().required('Toko pengguna tidak boleh kosong'),
@@ -132,8 +132,8 @@ const TambahModal = ({
                     }
                 </div>
                 <div className="w-full">
-                    <FormLabel htmlFor="regular-form-1">Email</FormLabel>
-                    <FormInput {...register('email', {required: "Tanggl Nota tidak boleh kosong"})} autoComplete="off" id="regular-form-1" type="text" placeholder='pengguna@hbpos.com' className={`${errors.email && "border-danger"}`} />
+                    <FormLabel htmlFor="regular-form-1">Username</FormLabel>
+                    <FormInput {...register('email', {required: "Username tidak boleh kosong"})} autoComplete="off" id="regular-form-1" type="text" placeholder='U00xx' className={`${errors.email && "border-danger"}`} />
                     {errors.email && 
                       <div className="mt-2 text-danger">
                           {errors.email.message}

@@ -99,22 +99,29 @@ const BarangModal = ({
             setStep(3);
             const valueData: any = [];
             for (let index = 0; index < barangList.length; index++) {
-            valueData.push({
-                kode: data.kode[index].values,
-                nama: data.nama[index].values,
-                qty: Number(data.qty[index].values),
-                satuan: data.satuan[index].values,
-                harga: Number(data.harga[index].values),
-                discount: Number(data.discount[index].values),
-                stokBarangId: data.stokBarangId[index].values,
-                jumlahHarga: Number(Number(data.qty[index].values) * Number(data.harga[index].values) - Number(data.discount[index].values)),
-                createdBy: userInfo.name,
-            });
+            StokModule.getOneById(data.stokBarangId[index].values).then((res: AxiosResponse) => {
+                const result = res.data;
+                if (result.data.jumlah < Number(data.qty[index].values)) {
+                    alert(`Jumlah ${data.nama[index].values} kurang dari jumlah stok (${result.data.jumlah}). Silahkan tambah stok terlebih dahulu`);
+                    return false;
+                } else {
+                    valueData.push({
+                        kode: data.kode[index].values,
+                        nama: data.nama[index].values,
+                        qty: Number(data.qty[index].values),
+                        satuan: data.satuan[index].values,
+                        harga: Number(data.harga[index].values),
+                        discount: Number(data.discount[index].values),
+                        stokBarangId: data.stokBarangId[index].values,
+                        jumlahHarga: Number(Number(data.qty[index].values) * Number(data.harga[index].values) - Number(data.discount[index].values)),
+                        createdBy: userInfo.name,
+                    });
+                    setBarangData(valueData as any[]);
+                    setIsModalOpen(false);
+                    setIsPembayaranOpen(true);
+                }
+              })
             }
-            console.log(valueData);
-            setBarangData(valueData as any[]);
-            setIsModalOpen(false);
-            setIsPembayaranOpen(true);
       }
 
       watch('qty');
@@ -127,7 +134,7 @@ const BarangModal = ({
   
       return (
         <div>
-          <Dialog size="lg" open={isModalOpen} onClose={()=> {
+          <Dialog size="xl" open={isModalOpen} onClose={()=> {
               setIsModalOpen(false);
               }}
               >
@@ -165,24 +172,21 @@ const BarangModal = ({
                                     setValue(`harga.${i}.values`, e?.harga);
                                     setValue(`stokBarangId.${i}.values`, e?.stokBarangId);
                                 }}
+                                required
                                 options={stokOptionList}
                                 />
                             </div>
-                            {/* <div className="w-full">
-                                <FormLabel>Kode</FormLabel>
-                                <FormInput {...register(`kode.${i}.values`, {required: 'Kode barang tidak boleh kosong'})} type="text" placeholder="Kode Barang" />
-                            </div> */}
                             <div className="w-full">
                                 <FormLabel>Qty</FormLabel>
-                                <FormInput {...register(`qty.${i}.values`, {required: 'Jumlah barang tidak boleh kosong'})} value={getValues(`qty.${i}.values`)} min='0' type="number" placeholder="0" />
+                                <FormInput {...register(`qty.${i}.values`, {required: 'Jumlah barang tidak boleh kosong'})} value={getValues(`qty.${i}.values`)} min='0' type="number" placeholder="0" required />
                             </div>
                             <div className="w-full">
                                 <FormLabel>Satuan</FormLabel>
-                                <FormInput {...register(`satuan.${i}.values`, {required: 'Satuan barang tidak boleh kosong'})} value={getValues(`satuan.${i}.values`)} type="text" placeholder="Ex: Pcs, Kg, Liter" />
+                                <FormInput {...register(`satuan.${i}.values`, {required: 'Satuan barang tidak boleh kosong'})} value={getValues(`satuan.${i}.values`)} type="text" placeholder="Ex: Pcs, Kg, Liter" required />
                             </div>
                             <div className="w-full">
                                 <FormLabel>Harga</FormLabel>
-                                <FormInput {...register(`harga.${i}.values`, {required: 'Harga barang tidak boleh kosong'})} value={getValues(`harga.${i}.values`)} min='0' type="number" placeholder="Rp. 0" />
+                                <FormInput {...register(`harga.${i}.values`, {required: 'Harga barang tidak boleh kosong'})} value={getValues(`harga.${i}.values`)} min='0' type="number" placeholder="Rp. 0" required />
                             </div>
                             <div className="w-full">
                                 <FormLabel>Diskon</FormLabel>

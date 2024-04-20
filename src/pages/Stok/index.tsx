@@ -659,11 +659,11 @@ function Main () {
                 </Tab.List>
                 <Tab.Panels className="mt-5">
                     <Tab.Panel className="leading-relaxed">
-                <div className="flex flex-wrap items-center col-span-12 mt-2 intro-y sm:flex-nowrap gap-2">
-              <Button variant="primary" className="mr-2 shadow-md" onClick={() => setIsModalOpen(true)}>
+                <div className="flex flex-wrap items-center col-span-12 mt-2 intro-y gap-2">
+              <Button variant="primary" className="shadow-md" onClick={() => setIsModalOpen(true)}>
                 Tambah Barang
               </Button>
-              <Menu>
+              {/* <Menu>
                 <Menu.Button as={Button} className="px-2 !box">
                   <span className="flex items-center justify-center w-5 h-5">
                     <Lucide icon="Plus" className="w-4 h-4" />
@@ -682,8 +682,8 @@ function Main () {
                     PDF
                   </Menu.Item>
                 </Menu.Items>
-              </Menu>
-              <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-2 md:ml-0 lg:mx-2">
+              </Menu> */}
+              <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-2 md:ml-0">
                 <div className="relative w-56">
                   <FormSelect value={selectedToko} onChange={(e: ChangeEvent) => setSelectedToko((e.target as HTMLSelectElement).value)}>
                     <option value='all'>Semua Lokasi</option>
@@ -712,13 +712,13 @@ function Main () {
                 <Lucide icon="Filter" className="w-4 h-4 mr-2" />
                   Filter
               </Button>
-              <Button variant="warning" className="ml-1 shadow-md" onClick={() => handleReset()}>
+              <Button variant="warning" className="shadow-md" onClick={() => handleReset()}>
                 <Lucide icon="RotateCcw" className="w-4 h-4 mr-2" />
                   Reset
               </Button>
             </div>
             {/* BEGIN: Data List */}
-            <div className="col-span-12 overflow-auto intro-y xl:overflow-visible   mt-4">
+            <div className="col-span-12 overflow-auto intro-y   mt-4">
               {!isDataLoading ? <Table className="border-spacing-y-[10px] border-separate -mt-2">
                 <Table.Thead>
                   <Table.Tr>
@@ -804,8 +804,8 @@ function Main () {
         {/* END: Pagination */}
             </Tab.Panel>
               <Tab.Panel className="leading-relaxed">
-              <div className="flex flex-wrap items-center col-span-12 mt-2 intro-y sm:flex-nowrap gap-2">
-              <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-2 md:ml-0 lg:mx-2">
+              <div className="flex flex-wrap items-center col-span-12 mt-2 intro-y gap-2">
+              <div className="w-full mt-3 sm:w-auto sm:mt-0 sm:ml-2 md:ml-0">
                 <div className="relative w-56">
                   <FormSelect value={selectedToko} onChange={(e: ChangeEvent) => setSelectedToko((e.target as HTMLSelectElement).value)}>
                     <option value='all'>Semua Lokasi</option>
@@ -834,13 +834,13 @@ function Main () {
                 <Lucide icon="Filter" className="w-4 h-4 mr-2" />
                   Filter
               </Button>
-              <Button variant="warning" className="ml-1 shadow-md" onClick={() => handleReset()}>
+              <Button variant="warning" className="shadow-md" onClick={() => handleReset()}>
                 <Lucide icon="RotateCcw" className="w-4 h-4 mr-2" />
                   Reset
               </Button>
             </div>
                     {/* BEGIN: Data List */}
-            <div className="col-span-12 overflow-auto intro-y xl:overflow-visible  mt-4">
+            <div className="col-span-12 overflow-auto intro-y  mt-4">
               {!isDataLoading ? <Table className="border-spacing-y-[10px] border-separate -mt-2">
                 <Table.Thead>
                   <Table.Tr>

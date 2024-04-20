@@ -7,6 +7,8 @@ import { IPenjualan } from '../../../../modules/penjualan/interfaces/penjualan.i
 import DetailModal from '../modal/detail'
 import PembayaranModal from '../modal/pembayaran'
 import PembayaranDetailModal from '../modal/pembayaran-detail'
+import PenjualanPrint from '../modal/print'
+import { useReactToPrint } from 'react-to-print'
 
 type ActionButtonsProps = {
   handleReloadData: () => void
@@ -24,9 +26,17 @@ const ActionButtons = ({
     const [isPembayaranModalOpen, setIsPembayaranModalOpen] = useState<boolean>(false);
     const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
     const deleteButtonRef = useRef(null);
+    const printRef = useRef<any>(null);
+    const handlePrint = useReactToPrint({
+      documentTitle: `No. Penjualan - ${initialValues.nomor}`,
+      content: () => printRef.current,
+    });
   
     return (
       <>
+      <div className="hidden">
+        <PenjualanPrint ref={printRef} initialValues={initialValues} type='Action' />
+      </div>
       <DetailModal
         initialValues={initialValues}
         isModalOpen={isDetailModalOpen}
@@ -58,6 +68,10 @@ const ActionButtons = ({
         }}>
           <Lucide icon="View" className="w-4 h-4 mr-1" />{" "}
           Detail
+        </a>
+        <a className="flex items-center mr-3" href="#" onClick={handlePrint}>
+          <Lucide icon="Wallet" className="w-4 h-4 mr-1" />{" "}
+          Print
         </a>
         <a className="flex items-center mr-3" href="#" onClick={() => {
           setIsEditModalOpen(true);

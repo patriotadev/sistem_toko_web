@@ -12,6 +12,7 @@ import PenjualanModule from '../../../../modules/penjualan/penjualan';
 import { IPenjualan, PenjualanPayload } from "../../../../modules/penjualan/interfaces/penjualan.interface";
 import { PenjualanInputs } from "../../types/penjualan.type";
 import toast from "react-hot-toast";
+import { AxiosResponse } from "axios";
 
 type EditModalProps = {
     handleReloadData: () => void,
@@ -59,8 +60,8 @@ const EditModal = ({
           }
           console.log(payload);
           PenjualanModule.update(payload)
-          .then(res => res.json())
-          .then(result => {
+          .then((res: AxiosResponse) => {
+            const result = res.data;
             setIsModalOpen(false);
             reset();
             if (result.code === 200) {

@@ -7,6 +7,7 @@ import { Dialog } from '../../../../base-components/Headless'
 import Lucide from '../../../../base-components/Lucide'
 import Button from '../../../../base-components/Button'
 import { IPenjualan } from '../../../../modules/penjualan/interfaces/penjualan.interface'
+import { AxiosResponse } from 'axios'
 
 type DeleteModalProps = {
     handleReloadData: () => void
@@ -26,8 +27,8 @@ const DeleteModal = ({
   
     const onDelete = (initialValues: IPenjualan) => {
       PenjualanModule.destroy(initialValues)
-      .then(res => res.json())
-          .then(result => {
+          .then((res: AxiosResponse) => {
+            const result = res.data;
             setDeleteConfirmationModal(false);
             if (result.code === 200) {
               toast.success(result.message);

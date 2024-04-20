@@ -68,12 +68,12 @@ const AccountTabPanel = (dt: AccountTabPanelProps) => {
               <div className="grid gap-x-5">
                 <div className="col-span-12 xl:col-span-6">
                   <div>
-                    <FormLabel htmlFor="update-profile-form-6">Email</FormLabel>
+                    <FormLabel htmlFor="update-profile-form-6">Username</FormLabel>
                     <FormInput
                       autoComplete="off"
                       id="update-profile-form-6"
                       type="text"
-                      placeholder="pengguna@hbpos.com"
+                      placeholder="U00xx"
                       value={user?.email}
                       disabled
                     />

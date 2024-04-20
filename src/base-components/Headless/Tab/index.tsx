@@ -6,8 +6,10 @@ type Variant = "tabs" | "pills" | "boxed-tabs" | "link-tabs";
 
 const tabContext = createContext<{
   selected: boolean
+  disabled: boolean
 }>({
   selected: false,
+  disabled: false
 });
 
 const listContext = createContext<{
@@ -42,6 +44,7 @@ function Tab({
           <tabContext.Provider
             value={{
               selected: selected,
+              disabled: false
             }}
           >
             {typeof children === "function"

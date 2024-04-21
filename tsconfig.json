@@ -18,6 +18,5 @@
     "types": ["vite/client"]
   },
   "include": ["src"],
-  "exclude": ["src/base-components/Headless/Tab/index.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -178,7 +178,7 @@ const BarangModal = ({
                             </div>
                             <div className="w-full">
                                 <FormLabel>Qty</FormLabel>
-                                <FormInput {...register(`qty.${i}.values`, {required: 'Jumlah barang tidak boleh kosong'})} value={getValues(`qty.${i}.values`)} min='0' type="number" placeholder="0" required />
+                                <FormInput {...register(`qty.${i}.values`, {required: 'Jumlah barang tidak boleh kosong'})} value={getValues(`qty.${i}.values`)} min='1' type="number" placeholder="0" required />
                             </div>
                             <div className="w-full">
                                 <FormLabel>Satuan</FormLabel>

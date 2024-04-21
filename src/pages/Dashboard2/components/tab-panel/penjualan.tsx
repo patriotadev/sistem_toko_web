@@ -226,14 +226,14 @@ const PenjualanTabPanel = () => {
                     Pendapatan
                   </div>
                   <div className="ml-auto">
-                    <Tippy
+                    {/* <Tippy
                       as="div"
                       className="cursor-pointer bg-success py-[3px] flex rounded-full text-white text-xs pl-2 pr-1 items-center font-medium"
                       content="Naik 33% dari bulan lalu"
                     >
                       33%
                       <Lucide icon="ChevronUp" className="w-4 h-4 ml-0.5" />
-                    </Tippy>
+                    </Tippy> */}
                   </div>
                 </div>
                 <div className="mt-1">
@@ -249,14 +249,14 @@ const PenjualanTabPanel = () => {
                     Pendapatan Bersih
                   </div>
                   <div className="ml-auto">
-                    <Tippy
+                    {/* <Tippy
                       as="div"
                       className="cursor-pointer bg-danger py-[3px] flex rounded-full text-white text-xs pl-2 pr-1 items-center font-medium"
                       content="Turun 33% dari bulan lalu"
                     >
                       33%
                       <Lucide icon="ChevronDown" className="w-4 h-4 ml-0.5" />
-                    </Tippy>
+                    </Tippy> */}
                   </div>
                 </div>
                 <div className="mt-1">

@@ -149,13 +149,13 @@ const BarangPoModal = ({
     const valueData: BarangPoInputs = [];
     if (barangPoData && barangPoData?.length > 0) {
       for (let index = 0; index < barangPoData.length; index++) {
+        if (Number(data.qty[index].values) > Number(barangPoData[index].qty)) {
+          alert(`Jumlah tidak boleh lebih dari jumlah PO (${Number(barangPoData[index].qty)})`);
+          return false;
+        }
         if(!hiddenItem.includes(data.id[index].values)) {
           StokModule.getOneById(data.stokBarangId[index].values).then((res: AxiosResponse) => {
             const result = res.data;
-            if (result.data.jumlah < Number(data.qty[index].values)) {
-              alert(`Jumlah ${data.nama[index].values} kurang dari jumlah stok (${result.data.jumlah}). Silahkan tambah stok terlebih dahulu`);
-              return false;
-            } else {
               valueData.push({
                 id: data.id[index].values,
                 kode: data.kode[index].values,
@@ -170,7 +170,6 @@ const BarangPoModal = ({
               setBarangPoData([]);
               setBarangPoOptions([]);
               setIsOpen(false);
-            }
           });
         }
       }
@@ -178,10 +177,6 @@ const BarangPoModal = ({
       for (let index = 0; index < barangList.length; index++) {
         StokModule.getOneById(data.stokBarangId[index].values).then((res: AxiosResponse) => {
           const result = res.data;
-          if (result.data.jumlah < Number(data.qty[index].values)) {
-            alert(`Jumlah ${data.nama[index].values} kurang dari jumlah stok (${result.data.jumlah}). Silahkan tambah stok terlebih dahulu`);
-            return false;
-          } else {
             valueData.push({
               id: data.id[index].values,
               kode: data.kode[index].values,
@@ -196,7 +191,6 @@ const BarangPoModal = ({
             setBarangPoData([]);
             setBarangPoOptions([]);
             setIsOpen(false);
-          }
         });
       }
     }
@@ -369,7 +363,9 @@ const BarangPoModal = ({
                               <FormLabel>Jumlah</FormLabel>
                               <FormInputCurrency
                                 value={getValues(`qty.${i}.values`)}
-                                onValueChange={(value: string | undefined) => setValue(`qty.${i}.values`, value)}
+                                onValueChange={(value: string | undefined) => {
+                                  setValue(`qty.${i}.values`, value)
+                                }}
                                 groupSeparator="."
                                 decimalSeparator=","
                               />
@@ -705,7 +701,7 @@ const TambahPoModal = ({
                                 </div>
                               }
                           </div>
-                          {/* <div className="col-span-12 sm:col-span-6">
+                          <div className="col-span-12 sm:col-span-6">
                             <FormCheck className='mt-4'>
                                 <FormCheck.Input checked={isPo} id="vertical-form-3" type="checkbox" onChange={(e) => {
                                   setIsPo(isPo !== Boolean(e.target.value))
@@ -714,7 +710,7 @@ const TambahPoModal = ({
                                   Surat Jalan dengan No. PO
                                 </FormCheck.Label>
                             </FormCheck>
-                          </div> */}
+                          </div>
                           {
                             isPo && 
                             <div className="col-span-12 sm:col-span-6">

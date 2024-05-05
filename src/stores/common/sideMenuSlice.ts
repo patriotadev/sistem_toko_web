@@ -29,23 +29,40 @@ const initialState: SideMenuState = {
       pathname: '/',
     },
     {
-      icon: "Building",
-      title: "PT",
+      icon: 'Files',
+      title: 'Master Data',
       subMenu: [
-        {
-          icon: "ChevronRight",
-          pathname: "/pt",
-          title: "PT",
-        },
-        {
-          icon: "ChevronRight",
-          pathname: "/project",
-          title: "Project",
-        },
+          {
+            icon: "ChevronRight",
+            pathname: "/pt",
+            title: "PT",
+          },
+          {
+            icon: "ChevronRight",
+            pathname: "/project",
+            title: "Project",
+          },
+          {
+            icon: "ChevronRight",
+            title: "Pengguna",
+            pathname: "/pengguna",
+          },
+          {
+            icon: "ChevronRight",
+            title: "Toko",
+            pathname: "/toko",
+          },
+      ]
+    },
+    {
+      icon: "Building",
+      title: "PO",
+      subMenu: [
+       
         {
           icon: "ChevronRight",
           pathname: "/po",
-          title: "PO",
+          title: "Daftar PO",
         },
         {
           icon: "ChevronRight",
@@ -101,26 +118,16 @@ const initialState: SideMenuState = {
     //     },
     //   ],
     // },
-    {
-      icon: "Files",
-      title: "Penjualan",
-      pathname: "/penjualan",
-    },
-    {
-      icon: "Layers",
-      title: "Stok Barang",
-      pathname: "/stok",
-    },
-    {
-      icon: "Users",
-      title: "Pengguna",
-      pathname: "/pengguna",
-    },
-    {
-      icon: "Building2",
-      title: "Toko",
-      pathname: "/toko",
-    },
+    // {
+    //   icon: "Files",
+    //   title: "Penjualan",
+    //   pathname: "/penjualan",
+    // },
+    // {
+    //   icon: "Layers",
+    //   title: "Stok Barang",
+    //   pathname: "/stok",
+    // },
     ],
 };
 

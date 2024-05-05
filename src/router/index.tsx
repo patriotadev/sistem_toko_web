@@ -71,13 +71,13 @@ function Router() {
                         <TandaTerimaNota />
                     </AuthGuard>
                 },
-                {
-                    path: '/stok',
-                    element: 
-                    <AuthGuard>
-                        <Stok/>
-                    </AuthGuard>
-                },
+                // {
+                //     path: '/stok',
+                //     element: 
+                //     <AuthGuard>
+                //         <Stok/>
+                //     </AuthGuard>
+                // },
                 {
                     path: '/pengguna',
                     element: 
@@ -99,13 +99,13 @@ function Router() {
                         <Toko/>
                     </AuthGuard>
                 },
-                {
-                    path: '/penjualan',
-                    element: 
-                    <AuthGuard>
-                        <Penjualan />
-                    </AuthGuard>
-                },
+                // {
+                //     path: '/penjualan',
+                //     element: 
+                //     <AuthGuard>
+                //         <Penjualan />
+                //     </AuthGuard>
+                // },
             ]
         },
         {

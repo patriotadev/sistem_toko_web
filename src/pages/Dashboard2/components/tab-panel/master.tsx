@@ -1,9 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from "clsx";
 import Lucide from "../../../../base-components/Lucide";
 import Tippy from "../../../../base-components/Tippy";
+import LaporanPoModule from '../../../../modules/laporan-po/laporan-po';
+import { AxiosResponse } from 'axios';
+
+type dataType = {
+  ptCount: number
+  projectCount: number
+  userCount: number
+  tokoCount: number
+}
 
 const MasterTabPanel = () => {
+  const [data, setData] = useState<dataType>();
+
+  const fetchData = async () => {
+    await LaporanPoModule.getMasterReport()
+      .then((res: AxiosResponse) => {
+        const result = res.data;
+        setData(result.data);
+      });
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, []);
+
   return (
     <div className="grid grid-cols-12 gap-6 mt-5">
               <div className="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
@@ -16,22 +39,12 @@ const MasterTabPanel = () => {
                   <div className="p-5 box">
                     <div className="flex">
                       <Lucide
-                        icon="ShoppingCart"
+                        icon="Building"
                         className="w-[28px] h-[28px] text-primary"
                       />
-                      <div className="ml-auto">
-                        <Tippy
-                          as="div"
-                          className="cursor-pointer bg-success py-[3px] flex rounded-full text-white text-xs pl-2 pr-1 items-center font-medium"
-                          content="33% Higher than last month"
-                        >
-                          33%
-                          <Lucide icon="ChevronUp" className="w-4 h-4 ml-0.5" />
-                        </Tippy>
-                      </div>
                     </div>
                     <div className="mt-6 text-3xl font-medium leading-8">
-                      48
+                      {data?.ptCount}
                     </div>
                     <div className="mt-1 text-base text-slate-500">
                       PT
@@ -49,28 +62,15 @@ const MasterTabPanel = () => {
                   <div className="p-5 box">
                     <div className="flex">
                       <Lucide
-                        icon="CreditCard"
+                        icon="FolderOpen"
                         className="w-[28px] h-[28px] text-pending"
                       />
-                      <div className="ml-auto">
-                        <Tippy
-                          as="div"
-                          className="cursor-pointer bg-danger py-[3px] flex rounded-full text-white text-xs pl-2 pr-1 items-center font-medium"
-                          content="2% Lower than last month"
-                        >
-                          2%
-                          <Lucide
-                            icon="ChevronDown"
-                            className="w-4 h-4 ml-0.5"
-                          />
-                        </Tippy>
-                      </div>
                     </div>
                     <div className="mt-6 text-3xl font-medium leading-8">
-                      1.431
+                      {data?.projectCount}
                     </div>
                     <div className="mt-1 text-base text-slate-500">
-                      Barang
+                      Project
                     </div>
                   </div>
                 </div>
@@ -85,25 +85,15 @@ const MasterTabPanel = () => {
                   <div className="p-5 box">
                     <div className="flex">
                       <Lucide
-                        icon="Monitor"
+                        icon="Users"
                         className="w-[28px] h-[28px] text-warning"
                       />
-                      <div className="ml-auto">
-                        <Tippy
-                          as="div"
-                          className="cursor-pointer bg-success py-[3px] flex rounded-full text-white text-xs pl-2 pr-1 items-center font-medium"
-                          content="12% Higher than last month"
-                        >
-                          12%{" "}
-                          <Lucide icon="ChevronUp" className="w-4 h-4 ml-0.5" />
-                        </Tippy>
-                      </div>
                     </div>
                     <div className="mt-6 text-3xl font-medium leading-8">
-                      12
+                      {data?.userCount}
                     </div>
                     <div className="mt-1 text-base text-slate-500">
-                      Karyawan
+                      User
                     </div>
                   </div>
                 </div>
@@ -118,25 +108,15 @@ const MasterTabPanel = () => {
                   <div className="p-5 box">
                     <div className="flex">
                       <Lucide
-                        icon="User"
+                        icon="Factory"
                         className="w-[28px] h-[28px] text-success"
                       />
-                      <div className="ml-auto">
-                        <Tippy
-                          as="div"
-                          className="cursor-pointer bg-success py-[3px] flex rounded-full text-white text-xs pl-2 pr-1 items-center font-medium"
-                          content="22% Higher than last month"
-                        >
-                          22%{" "}
-                          <Lucide icon="ChevronUp" className="w-4 h-4 ml-0.5" />
-                        </Tippy>
-                      </div>
                     </div>
                     <div className="mt-6 text-3xl font-medium leading-8">
-                      3
+                      {data?.userCount}
                     </div>
                     <div className="mt-1 text-base text-slate-500">
-                      Toko Cabang
+                      Toko
                     </div>
                   </div>
                 </div>

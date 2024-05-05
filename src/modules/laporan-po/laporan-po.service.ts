@@ -17,5 +17,11 @@ const getLaporanPenjualan = (query: any) => {
     });
 }
 
+const getMasterReport = () => {
+    return axiosInstance({
+        method: 'get',
+        url: `/laporan-po/master`,
+    });
+}
 
-export default { getDaftarTagihan, getLaporanPenjualan };
+export default { getDaftarTagihan, getLaporanPenjualan, getMasterReport };

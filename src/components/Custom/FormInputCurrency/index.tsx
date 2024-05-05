@@ -12,6 +12,7 @@ interface FormInputProps extends React.ComponentPropsWithoutRef<"input"> {
   decimalSeparator: string
   defaultValue?: string
   step?: string,
+  max?: number,
   onValueChange?: (value: string | undefined) => void
 }
 
@@ -28,6 +29,7 @@ const FormInputCurrency = forwardRef((props: FormInputProps, ref: FormInputRef) 
     decimalSeparator,
     defaultValue,
     step,
+    max,
     onValueChange,
     ...computedProps } = props;
   return (
@@ -39,6 +41,7 @@ const FormInputCurrency = forwardRef((props: FormInputProps, ref: FormInputRef) 
       decimalSeparator={decimalSeparator}
       onValueChange={onValueChange}
       defaultValue={defaultValue}
+      max={max}
       className={twMerge([
         "disabled:bg-slate-100 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent",
         "[&[readonly]]:bg-slate-100 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",

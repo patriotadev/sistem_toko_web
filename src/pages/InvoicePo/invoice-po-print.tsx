@@ -94,7 +94,7 @@ const InvoicePoPrint = forwardRef((props: PropsType, ref: any) => {
                 {item.kode}
               </td>
               <td style={{width: '25vw'}}>
-                {item.nama.split("-")[2]}
+                {item.nama}
               </td>
               <td style={{width: '25vw'}}>
                 {item.qty}

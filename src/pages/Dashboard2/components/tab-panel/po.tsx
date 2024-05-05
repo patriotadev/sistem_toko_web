@@ -304,7 +304,7 @@ const PoTabPanel = () => {
   }, []);
 
   return (
-    <div className="pt-10">     
+    <div className="pt-4">     
       <h2 className="text-lg font-medium intro-y">Laporan PO</h2>
       <div className="grid grid-cols-12 gap-6 mt-5">
         <div className="flex flex-wrap items-center col-span-12 mt-2 intro-y gap-2">

@@ -1,7 +1,7 @@
 import { useState, Fragment } from "react";
 import Lucide from "../../base-components/Lucide";
-import logoUrl from "../../assets/images/logo.svg";
-import { Link } from "react-router-dom";
+import logoUrl from "../../assets/images/warehouse.png";
+import { Link, useNavigate } from "react-router-dom";
 import Breadcrumb from "../../base-components/Breadcrumb";
 import { FormInput } from "../../base-components/Form";
 import { Menu, Popover } from "../../base-components/Headless";
@@ -15,6 +15,7 @@ import Cookies from "js-cookie";
 
 function Main() {
   const userInfo = useAppSelector(SelectUserInfo);
+  const navigate = useNavigate();
   const [searchDropdown, setSearchDropdown] = useState(false);
   const showSearchDropdown = () => {
     setSearchDropdown(true);
@@ -39,7 +40,7 @@ function Main() {
           <Link to="/" className="hidden -intro-x md:flex">
             <img
               alt="Icewall Tailwind HTML Admin Template"
-              className="w-6"
+              className="w-8"
               src={logoUrl}
             />
             <span className="ml-3 text-lg text-white"> TB. HIDUP BARU </span>
@@ -81,7 +82,9 @@ function Main() {
                 </div>
               </Menu.Header>
               <Menu.Divider className="bg-white/[0.08]" />
-              <Menu.Item className="hover:bg-white/5">
+              <Menu.Item className="hover:bg-white/5" onClick={() => {
+                navigate(`/pengguna/${userInfo.id}`)
+              }}>
                 <Lucide icon="User" className="w-4 h-4 mr-2" /> Profile
               </Menu.Item>
               {/* <Menu.Item className="hover:bg-white/5">

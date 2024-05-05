@@ -11,5 +11,10 @@ const getLaporanPenjualan = (query: any) => {
     .then((response) => Promise.resolve(response), (error) => Promise.reject(error));
 }
 
+const getMasterReport = () => {
+    return Service.getMasterReport()
+    .then((response) => Promise.resolve(response), (error) => Promise.reject(error));
+}
 
-export default { getDaftarTagihan, getLaporanPenjualan }
+
+export default { getDaftarTagihan, getLaporanPenjualan, getMasterReport }

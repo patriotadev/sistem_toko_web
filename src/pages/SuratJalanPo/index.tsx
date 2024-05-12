@@ -605,8 +605,8 @@ const TambahPoModal = ({
     const { register, handleSubmit, setValue, getValues, reset, watch, formState: {errors} } = useForm<Omit<SuratJalanPoInputs, 'id'>>({
       resolver: yupResolver(formSchema)
     });
-    const [selectedPo, setSelectedPo] = useState<SingleValue<OptionsProps>|null>();
-    const [selectedPt, setSelectedPt] = useState<SingleValue<OptionsProps>|null>();
+    const [selectedPo, setSelectedPo] = useState<SingleValue<any>|null>();
+    const [selectedPt, setSelectedPt] = useState<SingleValue<any>|null>();
     const [projectList, setProjectList] = useState<IProject[]>([]);
     const [isBarangModalOpen, setIsBarangModalOpen] = useState<boolean>(false);
     const [barangPoList, setBarangPoList] = useState<any[]>([]);
@@ -859,7 +859,7 @@ const TambahPoModal = ({
                               isClearable
                               name="ptId"
                               options={ptList}
-                              onChange={(e: SingleValue<any>) => {
+                              onChange={(e: any) => {
                                 setSelectedPt(e);
                               }}
                             />

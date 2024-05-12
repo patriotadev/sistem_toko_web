@@ -1,7 +1,7 @@
 import DarkModeSwitcher from "../../components/DarkModeSwitcher";
 import moment from "moment";
 import MainColorSwitcher from "../../components/MainColorSwitcher";
-import logoUrl from "../../assets/images/logo.svg";
+import logoUrl from "../../assets/images/warehouse.png";
 import illustrationUrl from "../../assets/images/illustration.svg";
 import loginIllustration from "../../assets/images/stock-exchange.png";
 import { FormInput, FormCheck } from "../../base-components/Form";
@@ -71,7 +71,7 @@ function Main() {
               <a href="" className="flex items-center pt-5 -intro-x">
                 <img
                   alt="Midone Tailwind HTML Admin Template"
-                  className="w-6"
+                  className="w-10"
                   src={logoUrl}
                 />
                 <span className="ml-3 text-lg text-white"> TB. HIDUP BARU </span>

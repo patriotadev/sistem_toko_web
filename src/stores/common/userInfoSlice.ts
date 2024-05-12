@@ -21,6 +21,7 @@ export const userInfoSlice = createSlice({
 
 export const SelectUserInfo = (state: RootState) => {
     return {
+        id: state.userInfo.value?.personal?.id,
         name: state.userInfo.value?.personal?.name,
         email: state.userInfo.value?.personal?.email,
         role: state.userInfo.value?.role?.description,

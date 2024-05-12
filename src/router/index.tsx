@@ -15,9 +15,6 @@ import Pengguna from "../pages/Pengguna";
 import DetailPengguna from "../pages/Pengguna/detail";
 import Toko from "../pages/Toko";
 import Penjualan from "../pages/Penjualan";
-import SuratJalanPenjualan from "../pages/SuratJalanPenjualan";
-import InvoicePenjualan from "../pages/InvoicePenjualan";
-import NotaPenjualan from "../pages/NotaPenjualan";
 
 function Router() {
     const routes = [
@@ -74,13 +71,13 @@ function Router() {
                         <TandaTerimaNota />
                     </AuthGuard>
                 },
-                {
-                    path: '/stok',
-                    element: 
-                    <AuthGuard>
-                        <Stok/>
-                    </AuthGuard>
-                },
+                // {
+                //     path: '/stok',
+                //     element: 
+                //     <AuthGuard>
+                //         <Stok/>
+                //     </AuthGuard>
+                // },
                 {
                     path: '/pengguna',
                     element: 
@@ -102,34 +99,13 @@ function Router() {
                         <Toko/>
                     </AuthGuard>
                 },
-                {
-                    path: '/penjualan',
-                    element: 
-                    <AuthGuard>
-                        <Penjualan />
-                    </AuthGuard>
-                },
-                {
-                    path: '/penjualan/surat-jalan',
-                    element: 
-                    <AuthGuard>
-                        <SuratJalanPenjualan />
-                    </AuthGuard>
-                },
-                {
-                    path: '/penjualan/invoice',
-                    element: 
-                    <AuthGuard>
-                        <InvoicePenjualan />
-                    </AuthGuard>
-                },
-                {
-                    path: '/penjualan/nota',
-                    element: 
-                    <AuthGuard>
-                        <NotaPenjualan />
-                    </AuthGuard>
-                },
+                // {
+                //     path: '/penjualan',
+                //     element: 
+                //     <AuthGuard>
+                //         <Penjualan />
+                //     </AuthGuard>
+                // },
             ]
         },
         {

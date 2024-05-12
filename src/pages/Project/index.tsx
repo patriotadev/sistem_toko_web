@@ -158,7 +158,7 @@ const TambahProjectModal = ({
                     >
                         Batal
                     </Button>
-                    <Button disabled={isSubmitLoading} variant="primary" type="submit" className="w-22">
+                    <Button disabled={isSubmitLoading} variant="primary" type="submit" className="w-24">
                         {isSubmitLoading ? 'Loading' : 'Simpan'}
                         {isSubmitLoading && <LoadingIcon icon="oval" color="white" className="w-4 h-4 ml-2" />}
                     </Button>
@@ -265,7 +265,7 @@ const EditProjectModal = ({
                     >
                         Batal
                     </Button>
-                    <Button disabled={isSubmitLoading} variant="primary" type="submit" className="w-22">
+                    <Button disabled={isSubmitLoading} variant="primary" type="submit" className="w-24">
                         {isSubmitLoading ? 'Loading' : 'Simpan'}
                         {isSubmitLoading && <LoadingIcon icon="oval" color="white" className="w-4 h-4 ml-2" />}
                     </Button>
@@ -382,7 +382,8 @@ const ActionButtons = ({
         <Lucide icon="CheckSquare" className="w-4 h-4 mr-1" />{" "}
         Edit
       </a>
-      <a
+      {
+        initialValues?.Po.length < 1 && <a
         className="flex items-center text-danger"
         href="#"
         onClick={(event) => {
@@ -392,6 +393,7 @@ const ActionButtons = ({
       >
       <Lucide icon="Trash2" className="w-4 h-4 mr-1" /> Hapus
       </a>
+      }
     </div>
       
     </>

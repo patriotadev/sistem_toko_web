@@ -41,7 +41,8 @@ const ActionButtons = ({
           <Lucide icon="CheckSquare" className="w-4 h-4 mr-1" />{" "}
           Edit
         </a>
-        <a
+        {
+          initialValues?.User.length < 1 && initialValues?.StokBarang.length < 1 && <a
           className="flex items-center text-danger"
           href="#"
           onClick={(event) => {
@@ -52,6 +53,7 @@ const ActionButtons = ({
         >
         <Lucide icon="Trash2" className="w-4 h-4 mr-1" /> Hapus
         </a>
+        }
       </div>
       </>
     );

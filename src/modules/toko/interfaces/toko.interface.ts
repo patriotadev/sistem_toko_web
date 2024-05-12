@@ -1,4 +1,5 @@
 import { IPengguna } from "../../pengguna/interfaces/pengguna.interface"
+import { IStok } from "../../stok/interfaces/stok.interface"
 
 export interface IToko {
     id: string
@@ -7,6 +8,7 @@ export interface IToko {
     address: string
     city: string
     User: IPengguna[]
+    StokBarang: IStok[]
 }
 
 export interface TokoPayload {

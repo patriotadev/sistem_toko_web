@@ -20,7 +20,7 @@
     "@fullcalendar/timegrid": "^5.11.3",
     "@googlemaps/js-api-loader": "^1.14.3",
     "@googlemaps/markerclusterer": "^2.0.11",
-    "@headlessui/react": "^1.7.14",
+    "@headlessui/react": "1.7.14",
     "@hookform/resolvers": "^2.9.10",
     "@left4code/tw-starter": "^3.1.36",
     "@react-pdf/renderer": "^3.1.14",

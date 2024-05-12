@@ -31,6 +31,7 @@ import { Icon } from "leaflet";
 import TomSelect from "../../base-components/TomSelect";
 import { BarangSuratJalanPo, ISuratJalanPo, SuratJalanPoPayload } from "../../modules/surat-jalan-po/interfaces/surat-jalan-po.interface";
 import Select, { MultiValue, OptionProps, SingleValue } from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import AsyncSelect from 'react-select/async';
 import BarangPoModule from '../../modules/barang-po/barang-po';
 import StokModule from '../../modules/stok/stok';
@@ -51,6 +52,8 @@ import TippyContent from "../../base-components/TippyContent";
 import { StatusList } from "./const/status-option";
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
+import { METODE_PEMBAYARAN } from "../Po/enum/po.enum";
+import { nanoid } from "nanoid";
 
 type TambahPoModalProps = {
     stokList: IStok[] | undefined
@@ -115,6 +118,8 @@ type BarangModalProps = {
   setBarangPoList: React.Dispatch<SetStateAction<BarangSuratJalanPo[]>>
   step: number
   setStep: React.Dispatch<SetStateAction<number>>
+  stokPoList: any
+  setStokPoList: any
 }
 
 type OptionsProps = {
@@ -132,7 +137,9 @@ const BarangPoModal = ({
   barangPoList,
   setBarangPoList,
   step,
-  setStep
+  setStep,
+  stokPoList,
+  setStokPoList,
 }: BarangModalProps) => {
   const userInfo = useAppSelector(SelectUserInfo);
   const { register, handleSubmit, setValue, getValues, reset, watch, formState: {errors}, setError } = useForm<any>();
@@ -145,17 +152,43 @@ const BarangPoModal = ({
 
   const onSubmit: SubmitHandler<BarangPoInputs> = (data) => {
     setStep(3);
-    console.log(data);
-    const valueData: BarangPoInputs = [];
-    if (barangPoData && barangPoData?.length > 0) {
-      for (let index = 0; index < barangPoData.length; index++) {
-        if(!hiddenItem.includes(data.id[index].values)) {
+    console.log(data, ">>> barang data");
+    const valueData: BarangPoInputs[] = [];
+    if (selectedPo) {
+      if (barangPoData && barangPoData?.length > 0) {
+        for (let index = 0; index < barangPoData.length; index++) {
+          if (Number(data.qty[index].values) > Number(barangPoData[index].qty)) {
+            alert(`Jumlah tidak boleh lebih dari jumlah PO (${Number(barangPoData[index].qty)})`);
+            return false;
+          }
+          if (Number(data.qty[index].values) < 1) {
+            alert(`Jumlah tidak boleh kurang dari 1`);
+            return false;
+          }
+          if(!hiddenItem.includes(data.id[index].values)) {
+            StokModule.getOneById(data.stokBarangId[index].values).then((res: AxiosResponse) => {
+              const result = res.data;
+                valueData.push({
+                  id: data.id[index].values,
+                  kode: data.kode[index].values,
+                  nama: data.nama[index].values,
+                  qty: Number(data.qty[index].values),
+                  satuan: data.satuan[index].values,
+                  stokBarangId: data.stokBarangId[index].values,
+                  step: data.step[index].values,
+                  createdBy: userInfo.name,
+                });
+                setBarangPoList(valueData as BarangSuratJalanPo[]);
+                setBarangPoData([]);
+                setBarangPoOptions([]);
+                setIsOpen(false);
+            });
+          }
+        }
+      } else {
+        for (let index = 0; index < barangList.length; index++) {
           StokModule.getOneById(data.stokBarangId[index].values).then((res: AxiosResponse) => {
             const result = res.data;
-            if (result.data.jumlah < Number(data.qty[index].values)) {
-              alert(`Jumlah ${data.nama[index].values} kurang dari jumlah stok (${result.data.jumlah}). Silahkan tambah stok terlebih dahulu`);
-              return false;
-            } else {
               valueData.push({
                 id: data.id[index].values,
                 kode: data.kode[index].values,
@@ -170,34 +203,58 @@ const BarangPoModal = ({
               setBarangPoData([]);
               setBarangPoOptions([]);
               setIsOpen(false);
-            }
           });
         }
       }
     } else {
+      const stokPo = [];
+      const tempStokId: string = nanoid();
       for (let index = 0; index < barangList.length; index++) {
-        StokModule.getOneById(data.stokBarangId[index].values).then((res: AxiosResponse) => {
-          const result = res.data;
-          if (result.data.jumlah < Number(data.qty[index].values)) {
-            alert(`Jumlah ${data.nama[index].values} kurang dari jumlah stok (${result.data.jumlah}). Silahkan tambah stok terlebih dahulu`);
-            return false;
-          } else {
-            valueData.push({
-              id: data.id[index].values,
-              kode: data.kode[index].values,
-              nama: data.nama[index].values,
-              qty: Number(data.qty[index].values),
-              satuan: data.satuan[index].values,
-              stokBarangId: data.stokBarangId[index].values,
-              step: data.step[index].values,
-              createdBy: userInfo.name,
-            });
-            setBarangPoList(valueData as BarangSuratJalanPo[]);
-            setBarangPoData([]);
-            setBarangPoOptions([]);
-            setIsOpen(false);
-          }
-        });
+        if (Number(data.qty[index].values) < 1) {
+          alert(`Jumlah tidak boleh kurang dari 1`);
+          return false;
+        }
+        if (Number(data.harga[index].values) < 0) {
+          alert(`Harga tidak boleh kurang dari 0`);
+          return false;
+        }
+        if (Number(data.discount[index].values) < 0) {
+          alert(`Discount tidak boleh kurang dari 0`);
+          return false;
+        }
+        if (data.stokBarangId[index].values === undefined || data.stokQty[index].values < data.qty[index].values) {
+          stokPo.push({
+            kode: data.kode[index].values,
+            nama: data.nama[index].values,
+            jumlah: 0,
+            isPo: true,
+            jumlahPo: data.stokQty[index].values ? Number(data.qty[index].values) - Number(data.stokQty[index].values) :  Number(data.qty[index].values),
+            satuan: data.satuan[index].values,
+            hargaJual: Number(data.harga[index].values),
+            createdBy: userInfo.name,
+            discount: data?.discount ? data?.discount[index]?.values : 0,
+            tokoId: userInfo.tokoId,
+            tempStokId: data.stokBarangId[index].values ? data.stokBarangId[index].values : tempStokId,
+          });
+        }
+
+        valueData.push({
+          kode: data.kode[index].values,
+          nama: data.nama[index].values,
+          qty: Number(data.qty[index].values),
+          satuan: data.satuan[index].values,
+          stokBarangId: data.stokBarangId[index].values ? data.stokBarangId[index].values : tempStokId,
+          harga: data.harga[index].values,
+          discount: data?.discount ? data?.discount[index]?.values : 0,
+          jumlahHarga: Number((Number(data.qty[index].values) * Number(data.harga[index].values)) - (data?.discount && Number(data?.discount[index]?.values) || 0)),
+          createdBy: userInfo.name,
+        })
+        console.log(valueData, ">>> valdataa");
+        setBarangPoList(valueData as BarangSuratJalanPo[]);
+        setBarangPoData([]);
+        setBarangPoOptions([]);
+        setStokPoList(stokPo);
+        setIsOpen(false);
       }
     }
   }
@@ -279,9 +336,14 @@ const BarangPoModal = ({
     fetchBarangPoData(undefined, 1, 10000, selectedPo?.value);
     const temp: SingleValue<any> = [];
     stokList && stokList.map((item: IStok) => temp.push({
-      label: `${item.kode} - ${item.nama}`,
+      label: item.nama,
       value: item.id,
-      detail: item
+      detail: item,
+      satuan: item?.satuan,
+      kode: item?.kode,
+      harga: item?.hargaJual,
+      qty: item?.jumlah,
+      stokBarangId: item?.id
     }));
     setStokOptions(temp);
   }, [isOpen])
@@ -303,9 +365,6 @@ const BarangPoModal = ({
       })
     }
   }, [barangPoData])
-
-  console.log(barangPoData);
-  console.log(hiddenItem);
 
   return (
     <div>
@@ -369,17 +428,12 @@ const BarangPoModal = ({
                               <FormLabel>Jumlah</FormLabel>
                               <FormInputCurrency
                                 value={getValues(`qty.${i}.values`)}
-                                onValueChange={(value: string | undefined) => setValue(`qty.${i}.values`, value)}
+                                onValueChange={(value: string | undefined) => {
+                                  setValue(`qty.${i}.values`, value)
+                                }}
                                 groupSeparator="."
                                 decimalSeparator=","
                               />
-                              {/* <FormInput {...register(`qty.${i}.values`, {required: 'Jumlah barang tidak boleh kosong'})} min='1' max={`${maxQtyList[i]}`} type="number" placeholder="0" />
-                                {
-                                  getValues(`stokData.${i}.values.jumlah`) < getValues(`qty.${i}.values`) && 
-                                    <div className="mt-2 text-danger">
-                                      **Jumlah stok barang di toko kurang dari jumlah permintaan
-                                    </div>
-                                } */}
                           </div>
                           <div className="w-full mb-10">
                               <FormLabel>Satuan</FormLabel>
@@ -397,47 +451,74 @@ const BarangPoModal = ({
                     </Disclosure.Button>
                     <Disclosure.Panel>
                       <div className="flex flex-col gap-2 flex-wrap">
-                        <div className="w-full">
-                            <FormLabel>Pilih Barang</FormLabel>
-                            <Select
-                              {...register(`nama.${i}.values`, {required: true})}
-                              options={stokOptions}
-                              value={getValues(`selectedBarang.${i}.values`) ? getValues(`selectedBarang.${i}.values`) : {label: '', value: ''}}
-                              onChange={async (e: SingleValue<OptionsProps>) => {
-                                // const selected = barangPoData?.filter((item) => item.nama === e?.label);
-                                // if (selected) {
-                                //   console.log(selected[0]);
-                                //   const fetchStokData = await fetchStokBarangById(selected[0]?.stokBarangId);
-                                  // setValue(`qty.${i}.values`, e?.detail.qty);
-                                  const temp: number[] = [...maxQtyList];
-                                  temp.splice(i, 1,  e?.detail.qty);
-                                  setMaxQtyList(temp);
-                                  setValue(`id.${i}.values`, e?.value)
-                                  setValue(`satuan.${i}.values`, e?.detail.satuan);
-                                  setValue(`stokBarangId.${i}.values`, e?.detail.id);
-                                  setValue(`kode.${i}.values`, e?.detail.kode);
-                                  setValue(`nama.${i}.values`, e?.label);
-                                  setValue(`selectedBarang.${i}.values`, e);
-                                  setValue(`step.${i}.values`,  1);
-                                  // setValue(`stokData.${i}.values`, fetchStokData);
-                                  // handleOptions(i);
-                                // }
+                      <div className="w-full">
+                            <FormLabel>Nama</FormLabel>
+                            <CreatableSelect
+                              isClearable
+                              isSearchable
+                              value={getValues(`selectedBarang.${i}.values`)}
+                              required
+                              onChange={(e) => {
+                                setValue(`selectedBarang.${i}.values`, e);
+                                setValue(`nama.${i}.values`, e?.label);
+                                setValue(`kode.${i}.values`, e?.kode ? e?.kode : e?.label);
+                                setValue(`stokQty.${i}.values`, e?.qty);
+                                setValue(`satuan.${i}.values`, e?.satuan);
+                                setValue(`stokBarangId.${i}.values`, e?.stokBarangId);
                               }}
+                              options={stokOptions}
                             />
                         </div>
                         <div className="w-full">
-                            <FormLabel>Jumlah</FormLabel>
-                            <FormInput {...register(`qty.${i}.values`, {required: 'Jumlah barang tidak boleh kosong'})} min='1' max={`${maxQtyList[i]}`} type="number" placeholder="0" />
-                              {
-                                getValues(`stokData.${i}.values.jumlah`) < getValues(`qty.${i}.values`) && 
-                                  <div className="mt-2 text-danger">
-                                    **Jumlah stok barang di toko kurang dari jumlah permintaan
-                                  </div>
-                              }
+                            <FormLabel>Qty</FormLabel>
+                            <FormInputCurrency
+                              value={getValues(`qty.${i}.values`)}
+                              onValueChange={(value: string | undefined) => setValue(`qty.${i}.values`, value)}
+                              groupSeparator="."
+                              decimalSeparator=","
+                              required
+                            />
                         </div>
-                        <div className="w-full mb-10">
+                        <div className="w-full">
                             <FormLabel>Satuan</FormLabel>
-                            <FormInput {...register(`satuan.${i}.values`, {required: 'Jumlah barang tidak boleh kosong'})} disabled type="text" placeholder="" />
+                            <FormInput {...register(`satuan.${i}.values`, {required: 'Satuan barang tidak boleh kosong'})} type="text" placeholder="Ex: Pcs, Kg, Liter" required />
+                        </div>
+                        <div className="w-full">
+                            <FormLabel>Harga</FormLabel>
+                            <FormInputCurrency
+                              prefix="Rp. "
+                              value={getValues(`harga.${i}.values`)}
+                              onValueChange={(value: string | undefined) => setValue(`harga.${i}.values`, value)}
+                              groupSeparator="."
+                              decimalSeparator=","
+                              required
+                            />
+                        </div>
+                        <div className="w-full">
+                            <FormLabel>Diskon</FormLabel>
+                            <FormInputCurrency
+                              prefix="Rp. "
+                              value={getValues(`discount.${i}.values`)}
+                              onValueChange={(value: string | undefined) => setValue(`discount.${i}.values`, value)}
+                              groupSeparator="."
+                              decimalSeparator=","
+                            />
+                        </div>
+                        <div className="w-full flex flex-col items-end mt-6">
+                            <FormLabel className="font-semibold">Total Harga</FormLabel>
+                            {getValues(`discount.${i}.values`) && getValues(`discount.${i}.values`) !== '0' ?
+                              <span className="text-danger text-xs mb-4">
+                                - Discount ({thousandLimiter(Number(getValues(`discount.${i}.values`) ? Number(getValues(`discount.${i}.values`)) : 0), 'Rp')})
+                              </span>
+                              : ''
+                            }
+                            {
+                              getValues(`qty.${i}.values`) > 0 && getValues(`harga.${i}.values`) > 0 ?
+                              <span>
+                                {thousandLimiter((getValues(`qty.${i}.values`) * getValues(`harga.${i}.values`)) - (getValues(`discount.${i}.values`) ? Number(getValues(`discount.${i}.values`)) : 0), 'Rp')}
+                              </span>
+                              : '0'
+                            }
                         </div>
                       </div>
                     </Disclosure.Panel>
@@ -525,16 +606,22 @@ const TambahPoModal = ({
       resolver: yupResolver(formSchema)
     });
     const [selectedPo, setSelectedPo] = useState<SingleValue<OptionsProps>|null>();
+    const [selectedPt, setSelectedPt] = useState<SingleValue<OptionsProps>|null>();
     const [projectList, setProjectList] = useState<IProject[]>([]);
     const [isBarangModalOpen, setIsBarangModalOpen] = useState<boolean>(false);
-    const [barangPoList, setBarangPoList] = useState<BarangSuratJalanPo[]>([]);
+    const [barangPoList, setBarangPoList] = useState<any[]>([]);
     const [step, setStep] = useState<number>(1);
     const [poList, setPoList] = useState<IPo[]>([]);
     const [poOptions, setPoOptions] = useState<OptionsProps[]>([]);
     const [isPo, setIsPo] = useState<boolean>(true);
+    const [stokPoList, setStokPoList] = useState<any>([]);
 
     const onSubmit: SubmitHandler<Omit<SuratJalanPoInputs, 'id'>> = (data, event) => {
         if (step === 1) {
+          if (selectedPo?.detail?.statusSJ === 'Selesai') {
+            alert(`Semua barang pada PO ${selectedPo?.label} sudah selesai diambil`);
+            return false;
+          }
           setIsBarangModalOpen(true);
           setStep(2);
         } else if (step === 3) {
@@ -549,8 +636,32 @@ const TambahPoModal = ({
               tokoId: userInfo.tokoId
           };
           const barangPo = barangPoList;
-  
-          const payload: SuratJalanPoPayload = {suratJalan, barangPo}
+          const isDirect = selectedPo ? false : true;
+          const po = {
+            ptId: selectedPt?.value,
+          }
+          let totalBayar: number = 0;
+          let pembayaran = {};
+          if (!selectedPo) {
+            barangPoList.map((item: any) => totalBayar += Number(item.jumlahHarga));
+            pembayaran = {
+              metodePembayaran: METODE_PEMBAYARAN.CICILAN,
+              totalPembayaran: totalBayar,
+              jumlahBayar: 0,
+              isApprove: false,
+              createdAt: new Date(),
+              createdBy: userInfo.name
+            }
+          }
+          const payload: any = {
+            suratJalan,
+            barangPo,
+            po,
+            isDirect,
+            pembayaran,
+            stokPo: stokPoList
+          };
+          console.log(payload, ">>> payload create sj");
           SuratJalanPoModule.create(payload)
           .then((res: AxiosResponse) => {
             const result = res.data;
@@ -619,6 +730,8 @@ const TambahPoModal = ({
       }
     }, [isPo]);
 
+    console.log(ptList, ">>> ptLIst");
+
     return (
       <div>
         <Toaster/>
@@ -631,6 +744,8 @@ const TambahPoModal = ({
           setBarangPoList={setBarangPoList}
           step={step}
           setStep={setStep}
+          stokPoList={stokPoList}
+          setStokPoList={setStokPoList}
         />
         <Dialog size="xl" open={isModalOpen} onClose={() => {}}>
             {
@@ -705,7 +820,7 @@ const TambahPoModal = ({
                                 </div>
                               }
                           </div>
-                          {/* <div className="col-span-12 sm:col-span-6">
+                          <div className="col-span-12 sm:col-span-6">
                             <FormCheck className='mt-4'>
                                 <FormCheck.Input checked={isPo} id="vertical-form-3" type="checkbox" onChange={(e) => {
                                   setIsPo(isPo !== Boolean(e.target.value))
@@ -714,9 +829,9 @@ const TambahPoModal = ({
                                   Surat Jalan dengan No. PO
                                 </FormCheck.Label>
                             </FormCheck>
-                          </div> */}
+                          </div>
                           {
-                            isPo && 
+                            isPo ? 
                             <div className="col-span-12 sm:col-span-6">
                               <FormLabel htmlFor="modal-form-6">
                                   No. PO
@@ -733,6 +848,22 @@ const TambahPoModal = ({
                                 }}
                               />
                             </div>
+                            : <div className="col-span-12 sm:col-span-6">
+                            <FormLabel htmlFor="modal-form-6">
+                                PT
+                            </FormLabel>
+                            <Select
+                              className="basic-single"
+                              defaultValue={selectedPt}
+                              isSearchable
+                              isClearable
+                              name="ptId"
+                              options={ptList}
+                              onChange={(e: SingleValue<any>) => {
+                                setSelectedPt(e);
+                              }}
+                            />
+                          </div>
                           }
                       </div>
                   </Dialog.Description>
@@ -822,19 +953,26 @@ const TambahPoModal = ({
                         />
                       {/* <FormInput value={getValues('tanggal')} disabled id="regular-form-1" type="date" placeholder="" /> */}
                   </div>
-                  <div className="col-span-12 sm:col-span-6">
+                  {
+                    selectedPo ?  <div className="col-span-12 sm:col-span-6">
+                    <FormLabel htmlFor="modal-form-6">
+                        No. PO
+                    </FormLabel>
+                    <FormInput value={selectedPo?.label} disabled id="regular-form-1" type="text" placeholder="" />
+                  </div> : <div className="col-span-12 sm:col-span-6">
                       <FormLabel htmlFor="modal-form-6">
-                          No. PO
+                          PT
                       </FormLabel>
-                      <FormInput value={selectedPo?.label} disabled id="regular-form-1" type="text" placeholder="" />
-                  </div>                                      
+                      <FormInput value={selectedPt?.label} disabled id="regular-form-1" type="text" placeholder="" />
+                  </div> 
+                  }                                     
                 </div>
                 <Disclosure.Group variant="boxed" className="mt-6">
                 <div className="mb-4 mt-8">
                     <label className="text-md font-semibold">2. Barang</label>
                 </div>
                 <div>
-                  {barangPoList.map((item, i) => (
+                  {selectedPo && barangPoList.map((item, i) => (
                     <Disclosure id={i}>
                     <Disclosure.Button>
                       Barang {i+1}
@@ -863,6 +1001,68 @@ const TambahPoModal = ({
                     </Disclosure.Panel>
                   </Disclosure>
                   ))}
+                  {!selectedPo && barangPoList.map((item, i) => (
+                    <Disclosure id={i}>
+                    <Disclosure.Button>
+                      Barang {i+1}
+                    </Disclosure.Button>
+                    <Disclosure.Panel>
+                      <div className="flex flex-col gap-2 flex-wrap">
+                        <div className="w-full">
+                            <FormLabel>Nama</FormLabel>
+                            <FormInput value={item?.nama} disabled type="text" placeholder="Nama Barang" />
+                        </div>
+                        <div className="w-full">
+                            <FormLabel>Qty</FormLabel>
+                            <FormInputCurrency
+                              value={item?.qty}
+                              disabled
+                              groupSeparator="."
+                              decimalSeparator=","
+                            />
+                        </div>
+                        <div className="w-full">
+                            <FormLabel>Satuan</FormLabel>
+                            <FormInput value={item?.satuan} disabled type="text" placeholder="Satuan Barang" />
+                        </div>
+                        <div className="w-full">
+                            <FormLabel>Harga</FormLabel>
+                            <FormInputCurrency
+                              value={item?.harga}
+                              disabled
+                              groupSeparator="."
+                              decimalSeparator=","
+                            />
+                        </div>
+                        <div className="w-full">
+                            <FormLabel>Discount</FormLabel>
+                            <FormInputCurrency
+                              value={item?.discount}
+                              disabled
+                              groupSeparator="."
+                              decimalSeparator=","
+                            />
+                        </div>
+                        <div className="w-full flex flex-col items-end mt-6">
+                            <FormLabel className="font-semibold">Total Harga</FormLabel>
+                            {item.discount && item.discount !== '0' ?
+                              <span className="text-danger text-xs mb-4">
+                                - Discount ({thousandLimiter(Number(item.discount), 'Rp')})
+                              </span>
+                              : ''
+                            }
+                            {
+                              item.qty !== '0' && item.harga !== '0' ?
+                              <span>
+                                {thousandLimiter(Number(Number(item.qty) * Number(item.harga) - Number(item.discount)), 'Rp')}
+                              </span>
+                              : '0'
+                            }
+                        </div>
+                      </div>
+                    </Disclosure.Panel>
+                  </Disclosure>
+                  ))}
                   <div className="flex justify-start mt-4">
                   </div>
                 </div>
@@ -878,7 +1078,7 @@ const TambahPoModal = ({
                       >
                         Kembali
                       </Button>
-                      <Button disabled={isSubmitLoading} variant="primary" type="submit" className="w-22">
+                      <Button disabled={isSubmitLoading} variant="primary" type="submit" className="w-24">
                         {isSubmitLoading ? 'Loading' : 'Simpan'}
                         {isSubmitLoading && <LoadingIcon icon="oval" color="white" className="w-4 h-4 ml-2" />}
                     </Button>    
@@ -1480,22 +1680,13 @@ const ActionButtons = ({
       initialValues={initialValues}
     />
     <div className="flex items-center justify-start gap-4">
-      {
-        initialValues?.Po?.noPo ? <a className="flex items-center mr-3" href="#" onClick={(event) => {
+        <a className="flex items-center mr-3" href="#" onClick={(event) => {
           event.preventDefault();
           setInvoiceConfirmationModal(true);
         }}>
         <Lucide icon="StickyNote" className="w-4 h-4 mr-1" />{" "}
         Invoice
-        </a> :
-        <a className="flex items-center mr-3" href="#" onClick={(event) => {
-            event.preventDefault();
-            setInvoiceConfirmationModal(true);
-          }}>
-        <Lucide icon="Pencil" className="w-4 h-4 mr-1" />{" "}
-          PO
         </a>
-      }
       <a className="flex items-center mr-3" href="#" onClick={() => {
         setIsDetailModalOpen(true);
       }}>
@@ -1516,7 +1707,8 @@ const ActionButtons = ({
         <Lucide icon="Printer" className="w-4 h-4 mr-1" />{" "}
         Print
       </a>
-      <a
+      {
+        initialValues?.InvoicePo.length < 1 && <a
         className="flex items-center text-danger"
         href="#"
         onClick={(event) => {
@@ -1526,6 +1718,7 @@ const ActionButtons = ({
       >
       <Lucide icon="Trash2" className="w-4 h-4 mr-1" /> Hapus
       </a>
+      }
     </div>
       
     </>

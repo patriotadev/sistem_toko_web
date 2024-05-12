@@ -446,6 +446,7 @@ const TambahPoModal = ({
           }
   
           const payload = {po, barangPo, stokPo, pembayaran}
+          console.log(payload, ">>> payload");
           PoModule.create(payload)
           .then((res: AxiosResponse) => {
             const result = res.data;
@@ -471,7 +472,6 @@ const TambahPoModal = ({
           })
           .finally(() => setIsSubmitLoading(false));
         }
-
     }
 
     const fetchProjectData = (search: string | undefined, page: number, perPage: number, ptId: string) => {
@@ -835,7 +835,7 @@ const TambahPoModal = ({
                       >
                         Kembali
                       </Button>
-                      <Button disabled={isSubmitLoading} variant="primary" type="submit" className="w-22">
+                      <Button disabled={isSubmitLoading} variant="primary" type="submit" className="w-24">
                         {isSubmitLoading ? 'Loading' : 'Simpan'}
                         {isSubmitLoading && <LoadingIcon icon="oval" color="white" className="w-4 h-4 ml-2" />}
                     </Button>    
@@ -1578,7 +1578,8 @@ const ActionButtons = ({
           Pembayaran
         </a>
       }
-      <a
+      {
+        initialValues?.SuratJalanPo.length < 1 &&  <a
         className="flex items-center text-danger"
         href="#"
         onClick={(event) => {
@@ -1588,6 +1589,7 @@ const ActionButtons = ({
       >
       <Lucide icon="Trash2" className="w-4 h-4 mr-1" /> Hapus
       </a>
+      }
     </div>
       
     </>

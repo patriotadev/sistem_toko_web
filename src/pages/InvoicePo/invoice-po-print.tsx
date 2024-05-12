@@ -18,7 +18,7 @@ const InvoicePoPrint = forwardRef((props: PropsType, ref: any) => {
         <div style={{display: 'flex', gap: '25px'}}>
           <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
             <span>{props?.initialValues?.Pt?.nama}</span>
-            <span>NO. PO : {props?.initialValues?.Po?.noPo}</span>
+            <span>{props?.initialValues?.Po?.noPo[0] !== '[' ? `NO. PO : ${props?.initialValues?.Po?.noPo}` : ''}</span>
             <span>NO. SJ : {props?.initialValues?.SuratJalanPo?.nomor}</span>
             <span style={{marginTop: '30px'}}>KETERANGAN :</span>
           </div>
@@ -54,11 +54,6 @@ const InvoicePoPrint = forwardRef((props: PropsType, ref: any) => {
             </th>
             <th style={{textAlign: 'start'}}>
               <td style={{width: '25vw'}}>
-                KODE BARANG
-              </td>
-            </th>
-            <th style={{textAlign: 'start'}}>
-              <td style={{width: '25vw'}}>
                 NAMA BARANG
               </td>
             </th>
@@ -89,9 +84,6 @@ const InvoicePoPrint = forwardRef((props: PropsType, ref: any) => {
               <tr>
               <td style={{width: '15vw'}}>
                 {index + 1}.
-              </td>
-              <td style={{width: '25vw'}}>
-                {item.kode}
               </td>
               <td style={{width: '25vw'}}>
                 {item.nama}

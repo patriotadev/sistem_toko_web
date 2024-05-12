@@ -139,10 +139,10 @@ const EditModal = ({
                       >
                           Batal
                       </Button>
-                      <Button variant="primary" type="submit" className="w-20">
-                          Simpan
-                          {isSubmitLoading && <LoadingIcon icon="oval" color="white" className="w-4 h-4 ml-2" />}
-                      </Button>
+                      <Button variant="primary" type="submit" disabled={isSubmitLoading} className="w-24">
+                            {isSubmitLoading ? 'Loading' : 'Simpan'}
+                            {isSubmitLoading && <LoadingIcon icon="oval" color="white" className="w-4 h-4 ml-2" />}
+                        </Button> 
                   </Dialog.Footer>
                   </form>
               </Dialog.Panel>

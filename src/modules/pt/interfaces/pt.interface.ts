@@ -1,3 +1,5 @@
+import { IProject } from "../../project/interfaces/project.interface"
+
 export interface PtPayload {
     nama: string
     alamat: string
@@ -18,4 +20,5 @@ export interface IPt {
     alamat: string
     telepon: string
     createdBy: string
+    Project?: IProject[]
 }

@@ -302,6 +302,7 @@ const TambahPoModal = ({
                     isMulti
                     isSearchable
                     isClearable
+                    required
                     options={invoiceList}
                   />
               </div>
@@ -322,9 +323,9 @@ const TambahPoModal = ({
               >
                 Batal
               </Button>
-              <Button variant="primary" type="submit" className="w-20">
-                  Simpan
-                  {isSubmitLoading && <LoadingIcon icon="oval" color="white" className="w-4 h-4 ml-2" />}
+              <Button variant="primary" type="submit" disabled={isSubmitLoading} className="w-24">
+                {isSubmitLoading ? 'Loading' : 'Simpan'}
+                {isSubmitLoading && <LoadingIcon icon="oval" color="white" className="w-4 h-4 ml-2" />}
               </Button> 
             </Dialog.Footer>
           </Dialog.Panel>
@@ -345,8 +346,38 @@ const EditBarangModal = ({
 }: EditBarangModalProps) => {
     const userInfo = useAppSelector(SelectUserInfo);
     const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
+    const [selectedInvoicePoListData, setSelectedInvoicePoListData] = useState<IInvoicePo[]>([]);
     const [invoicePoOptionsList, setInvoicePoOptionsList] = useState<OptionsProps[]>([]);
     const [selectedInvoicePo, setSelectedInvoicePo] = useState<MultiValue<OptionsProps>>([]);
+    const [invoiceList, setInvoiceList] = useState<any>([]);
+    const [selectedPo, setSelectedPo] = useState<any[]>([]);
+    const [selectedPt, setSelectedPt] = useState<SingleValue<any>>(ptList?.find((pt: any) => pt.value === initialValues?.Pt?.id));
+    const [projectListTambah, setProjectListTambah] = useState<any>([]);
+    const [selectedProject, setSelectedProject] = useState<SingleValue<any>>({
+      label: selectedPt?.project?.find((project: any) => project.id === initialValues?.Project?.id).nama,
+      value: selectedPt?.project?.find((project: any) => project.id === initialValues?.Project?.id).id,
+    });
+    console.log(ptList.find((pt) => pt.id === initialValues?.Pt?.id), ">>> ptList");
+    const fetchInvoiceList = async (ptId: string, projectId: string) => {
+      const params = {
+        ptId,
+        projectId
+      }
+      await InvoicePoModule.getList(params).then((res: AxiosResponse) => {
+        const result = res.data;
+        const temp: any[] = [];
+        result.data.map((item: any) => {
+          if (item.TandaTerimaNotaList.length < 1) {
+            temp.push({
+              label: item.nomor,
+              value: item.id,
+              detail: item
+            })
+          }
+        });
+        setInvoiceList(temp);
+      })
+    };
     const { register, handleSubmit, watch, setValue, getValues, reset, formState: {errors} } = useForm<PoInputs>({
       defaultValues: {
         id: initialValues.id,
@@ -354,14 +385,12 @@ const EditBarangModal = ({
         nomor: initialValues.nomor,
       }
     });
+    console.log(initialValues, ">>> initialValues");
     const onSubmit: SubmitHandler<PoInputs> = (data, event) => {
       let invoicePoListPayload: any = [];
       console.log(selectedInvoicePo);
-      selectedInvoicePo?.forEach((item) => {
-        invoicePoListPayload.push({
-          tandaTerimaNotaId: data.id,
-          invoicePoId: item?.value
-        });
+      selectedPo?.forEach((item) => {
+        invoicePoListPayload.push(item.detail);
       });
       setIsSubmitLoading(true);
       data.updatedBy = userInfo.name;
@@ -373,7 +402,7 @@ const EditBarangModal = ({
           upadtedBy: data.updatedBy,
           tokoId: userInfo.tokoId
       }
-
+      console.log(payload, ">>> payloadss");
       NotaModule.update(payload)
       .then((res: AxiosResponse) => {
         const result = res.data;
@@ -389,18 +418,60 @@ const EditBarangModal = ({
       .catch((error) => toast.error(error.message))
       .finally(() => setIsSubmitLoading(false));
     }
+
+    const fetchSelectedInvoicePoListData = () => {
+      const invoicePoId: string[] = initialValues.TandaTerimaNotaList.map((item) => item.invoicePoId);
+      console.log(invoicePoId);
+      InvoicePoModule.getByNota(invoicePoId)
+        .then((res: AxiosResponse) => {
+          const result = res.data;
+          const temp: any[] = [];
+          result.data.map((item: any) => {
+            temp.push({
+              label: item.nomor,
+              value: item.id,
+              detail: item
+            });
+          })
+          setSelectedPo(temp);
+        } );
+    }
+  
+    useEffect(() => {
+      if (isEditModalOpen) {
+        fetchSelectedInvoicePoListData();
+      }
+    }, [isEditModalOpen]);
+
+    useEffect(() => {
+      if (selectedPt) {
+        const temp: any[] = [];
+        console.log(selectedPt);
+        selectedPt?.project?.map((p: any) => {
+          temp.push({
+            label: p.nama,
+            value: p.id
+          })
+        });
+        setProjectListTambah(temp);
+      }
+    }, [selectedPt])
+
+    useEffect(() => {
+      fetchInvoiceList(selectedPt?.value, selectedProject?.value);
+    }, [selectedProject])
     
     useEffect(() => {
       if (isEditModalOpen) {
-        const temp: OptionsProps[] = [];
-        const poTemp: OptionsProps[] = [];
-        invoicePoList.forEach((item: IInvoicePo) => {
+        const temp: any[] = [];
+        const poTemp: any[] = [];
+        invoicePoList.forEach((item: any) => {
           temp.push({
             label: item.nomor,
             value: item.id,
             detail: item
           });
-
+          
           if (initialValues.TandaTerimaNotaList.some((el) => el.invoicePoId === item.id )) {
             // const InvoicePoListValues = initialValues.InvoicePoList.filter((val) => val.poId === item.id)[0]; 
             poTemp.push({
@@ -428,23 +499,59 @@ const EditBarangModal = ({
           </div>
       </Dialog.Title>
       <Dialog.Description>
-        <div className="flex flex-col gap-4 flex-wrap">
-          <div className="w-full">
-              <FormLabel htmlFor="regular-form-1">Pilih Po</FormLabel>
-              <Select
-                value={selectedInvoicePo}
-                isMulti
-                isSearchable
-                isClearable
-                onChange={(e) => setSelectedInvoicePo(e)}
-                options={invoicePoOptionsList}
-              />
-          </div>
-          <div className="w-full">
-              <FormLabel htmlFor="regular-form-1">Jatuh Tempo (Hari)</FormLabel>
-              <FormInput value={getValues('jatuhTempo')} {...register('jatuhTempo', {required: 'Jatuh tempo tidak boleh kosong'})} id="regular-form-1" type="number" min="0" placeholder="" />
-          </div>
-        </div>
+      <div className="flex flex-col gap-4 flex-wrap">
+              <div className="w-full">
+                  <FormLabel htmlFor="regular-form-1">Pilih PT</FormLabel>
+                  <Select
+                    onChange={(e) => {
+                      setSelectedPt(e);
+                      setSelectedProject(null);
+                      setSelectedPo([]);
+                    }}
+                    value={selectedPt}
+                    isSearchable
+                    isClearable
+                    options={ptList}
+                  />
+              </div>
+              <div className="w-full">
+                  <FormLabel htmlFor="regular-form-1">Pilih Project</FormLabel>
+                  <Select
+                    isDisabled={!selectedPt}
+                    onChange={(e) => {
+                      setSelectedProject(e)
+                      setSelectedPo([])
+                    }}
+                    value={selectedProject}
+                    isSearchable
+                    isClearable
+                    options={projectListTambah}
+                  />
+              </div>
+              <div className="w-full">
+                  <FormLabel htmlFor="regular-form-1">Pilih Invoice</FormLabel>
+                  <Select
+                    isDisabled={!selectedProject}
+                    onChange={(e) => {
+                      setSelectedPo(e as unknown as any)
+                    }}
+                    value={selectedPo}
+                    isMulti
+                    isSearchable
+                    isClearable
+                    options={invoiceList}
+                  />
+              </div>
+              <div className="w-full">
+                <FormLabel htmlFor="regular-form-1">Jatuh Tempo (Hari)</FormLabel>
+                <FormInput {...register('jatuhTempo', {required: 'Jatuh tempo tidak boleh kosong'})} id="regular-form-1" type="number" min="0" placeholder="" className={`${errors.jatuhTempo && "border-danger"}`} />
+                {errors.jatuhTempo && 
+                  <div className="mt-2 text-danger">
+                      {errors.jatuhTempo.message}
+                  </div>
+                }
+              </div>
+            </div>
       </Dialog.Description>
         <Dialog.Footer>
           <Button type="button" variant="secondary" onClick={()=> setIsEditModalOpen(false)}
@@ -452,8 +559,8 @@ const EditBarangModal = ({
           >
             Batal
           </Button>
-          <Button variant="primary" type="submit" className="w-20">
-              Simpan
+          <Button variant="primary" type="submit" disabled={isSubmitLoading} className="w-24">
+              {isSubmitLoading ? 'Loading' : 'Simpan'}
               {isSubmitLoading && <LoadingIcon icon="oval" color="white" className="w-4 h-4 ml-2" />}
           </Button> 
         </Dialog.Footer>
@@ -747,7 +854,8 @@ const ActionButtons = ({
         <Lucide icon="CheckSquare" className="w-4 h-4 mr-1" />{" "}
         Edit
       </a>
-      <a
+      {
+        initialValues?.Invoice.length < 1 && <a
         className="flex items-center text-danger"
         href="#"
         onClick={(event) => {
@@ -758,6 +866,8 @@ const ActionButtons = ({
       >
       <Lucide icon="Trash2" className="w-4 h-4 mr-1" /> Hapus
       </a>
+      }
+      
     </div>
       
     </>

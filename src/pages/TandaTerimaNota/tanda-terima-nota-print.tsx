@@ -20,7 +20,7 @@ const TandaTerimaNotaPrint = forwardRef((props: PropsType, ref: any) => {
           <div style={{display: 'flex', flexDirection: 'column', gap: '10px', width: '200px'}}>
             <span>{props?.initialValues?.Pt?.nama}</span>
             <span>{props?.initialValues?.Pt?.alamat}</span>
-            <span>PROJECT : {props?.initialValues?.Project?.nama}</span>
+            <span>{props?.initialValues?.Project?.nama[0] !== '[' ? `PROJECT : ${props?.initialValues?.Project?.nama}` : ''}</span>
             <span style={{marginTop: '30px'}}>KETERANGAN :</span>
           </div>
         </div>

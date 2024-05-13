@@ -218,9 +218,11 @@ const BarangPoModal = ({
           alert(`Harga tidak boleh kurang dari 0`);
           return false;
         }
-        if (Number(data.discount[index].values) < 0) {
-          alert(`Discount tidak boleh kurang dari 0`);
-          return false;
+        if (data.discount && Number(data.discount[index].values) < 0) {
+          if (data.discount[index]) {
+            alert(`Discount tidak boleh kurang dari 0`);
+            return false;
+          }
         }
         if (data.stokBarangId[index].values === undefined || data.stokQty[index].values < data.qty[index].values) {
           stokPo.push({
@@ -494,7 +496,7 @@ const BarangPoModal = ({
                               required
                             />
                         </div>
-                        <div className="w-full">
+                        {/* <div className="w-full">
                             <FormLabel>Diskon</FormLabel>
                             <FormInputCurrency
                               prefix="Rp. "
@@ -503,7 +505,7 @@ const BarangPoModal = ({
                               groupSeparator="."
                               decimalSeparator=","
                             />
-                        </div>
+                        </div> */}
                         <div className="w-full flex flex-col items-end mt-6">
                             <FormLabel className="font-semibold">Total Harga</FormLabel>
                             {getValues(`discount.${i}.values`) && getValues(`discount.${i}.values`) !== '0' ?
@@ -1034,7 +1036,7 @@ const TambahPoModal = ({
                               decimalSeparator=","
                             />
                         </div>
-                        <div className="w-full">
+                        {/* <div className="w-full">
                             <FormLabel>Discount</FormLabel>
                             <FormInputCurrency
                               value={item?.discount}
@@ -1042,7 +1044,7 @@ const TambahPoModal = ({
                               groupSeparator="."
                               decimalSeparator=","
                             />
-                        </div>
+                        </div> */}
                         <div className="w-full flex flex-col items-end mt-6">
                             <FormLabel className="font-semibold">Total Harga</FormLabel>
                             {item.discount && item.discount !== '0' ?

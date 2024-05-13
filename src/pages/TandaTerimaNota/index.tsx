@@ -1146,11 +1146,11 @@ function Main () {
                     {`${item.jatuhTempo} Hari`}
                   </Table.Td>
                   <Table.Td className="first:rounded-l-md last:rounded-r-md text-start bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
-                    {moment(moment(new Date()).utc().format()).add(item.jatuhTempo, 'd').format('DD MMM YYYY')}
+                    {moment(moment(item.tanggal).utc().format()).add(item.jatuhTempo, 'd').format('DD MMM YYYY')}
                   </Table.Td>
                   <Table.Td className="first:rounded-l-md last:rounded-r-md text-start bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
                     {
-                      Number(moment(moment(new Date()).format('YYYYMMDD')).diff(moment(moment(item.createdAt).utc().format()).add(item.jatuhTempo, 'd').format('YYYYMMDD'), 'days')) >= 0 ?
+                      Number(moment(moment(new Date()).format('YYYYMMDD')).diff(moment(moment(item.tanggal).utc().format()).add(item.jatuhTempo, 'd').format('YYYYMMDD'), 'days')) >= 0 ?
                       <Button size="sm" variant='outline-danger'>{Status.JATUH_TEMPO}</Button>
                       :
                       <Button size="sm" variant='outline-primary'>{Status.BELUM_JATUH_TEMPO}</Button>

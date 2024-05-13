@@ -3,6 +3,7 @@ import { IPo } from "../../po/interfaces/po.interface"
 import { IPt } from "../../pt/interfaces/pt.interface"
 
 export interface BarangSuratJalanPo {
+        discount: number
         id: string
         kode: string
         nama: string

@@ -13,7 +13,7 @@ import { useAppSelector } from "../../stores/hooks";
 import { FormattedMenu, nestedMenu } from "../../layouts/SideMenu/side-menu";
 import { linkTo, enter, leave } from "./mobile-menu";
 import Lucide from "../../base-components/Lucide";
-import logoUrl from "../../assets/images/logo.svg";
+import logoUrl from "../../assets/images/warehouse.png";
 import clsx from "clsx";
 import SimpleBar from "simplebar";
 
@@ -49,7 +49,7 @@ function Main() {
           <a href="" className="flex mr-auto">
             <img
               alt="Midone Tailwind HTML Admin Template"
-              className="w-6"
+              className="w-8"
               src={logoUrl}
             />
           </a>

@@ -95,10 +95,14 @@ const InvoicePoPrint = forwardRef((props: PropsType, ref: any) => {
                 {item.satuan}
               </td>
               <td style={{width: '25vw'}}>
-                {item.harga ? thousandLimiter(item.harga, 'Rp') : 0}
+                {
+                  item.harga ? thousandLimiter(item.harga, 'Rp') : 0
+                }
               </td>
-              <td style={{width: '25vw'}}>
-                {item.harga ? thousandLimiter(item.harga * item.qty, 'Rp') : 0}
+              <td style={{width: '35vw'}}>
+                {
+                  item.harga ? thousandLimiter(item.harga * item.qty - item?.discount, 'Rp') : 0
+                }
               </td>
             </tr>)
             }

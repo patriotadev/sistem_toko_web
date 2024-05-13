@@ -14,7 +14,6 @@ import TandaTerimaNota from "../pages/TandaTerimaNota";
 import Pengguna from "../pages/Pengguna";
 import DetailPengguna from "../pages/Pengguna/detail";
 import Toko from "../pages/Toko";
-import Penjualan from "../pages/Penjualan";
 
 function Router() {
     const routes = [
@@ -111,10 +110,6 @@ function Router() {
         {
             path: '/login',
             element: <Login />,
-        },
-        {
-            path: '/register',
-            element: <Register />,
         },
     ]
 

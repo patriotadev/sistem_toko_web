@@ -315,7 +315,7 @@ const BarangPoModal = ({
                               required
                             />
                         </div>
-                        <div className="w-full">
+                        {/* <div className="w-full">
                             <FormLabel>Diskon</FormLabel>
                             <FormInputCurrency
                               prefix="Rp. "
@@ -324,7 +324,7 @@ const BarangPoModal = ({
                               groupSeparator="."
                               decimalSeparator=","
                             />
-                        </div>
+                        </div> */}
                         <div className="w-full flex flex-col items-end mt-6">
                             <FormLabel className="font-semibold">Total Harga</FormLabel>
                             {getValues(`discount.${i}.values`) && getValues(`discount.${i}.values`) !== '0' ?
@@ -784,16 +784,15 @@ const TambahPoModal = ({
                               decimalSeparator=","
                             />
                         </div>
-                        <div className="w-full">
+                        {/* <div className="w-full">
                             <FormLabel>Diskon</FormLabel>
-                            {/* <FormInput value={item.discount} disabled min='0' type="number" placeholder="Rp. 0" /> */}
                             <FormInputCurrency
                               value={item.discount}
                               disabled
                               groupSeparator="."
                               decimalSeparator=","
                             />
-                        </div>
+                        </div> */}
                         <div className="w-full flex flex-col items-end mt-6">
                             <FormLabel className="font-semibold">Total Harga</FormLabel>
                             {item.discount && item.discount !== '0' ?

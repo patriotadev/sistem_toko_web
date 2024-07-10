@@ -86,27 +86,27 @@ const initialState: SideMenuState = {
         },
       ],
     },
-    {
-      icon: "Files",
-      title: "Penjualan - New",
-      subMenu: [
-        {
-          icon: "ChevronRight",
-          pathname: "/penjualan/laporan",
-          title: "Laporan",
-        },
-        {
-          icon: "ChevronRight",
-          pathname: "/penjualan/transaksi",
-          title: "Transaksi",
-        },
-        {
-          icon: "ChevronRight",
-          pathname: "/penjualan/data-pembeli",
-          title: "Pelanggan",
-        },
-      ],
-    },
+    // {
+    //   icon: "Files",
+    //   title: "Penjualan - New",
+    //   subMenu: [
+    //     {
+    //       icon: "ChevronRight",
+    //       pathname: "/penjualan/laporan",
+    //       title: "Laporan",
+    //     },
+    //     {
+    //       icon: "ChevronRight",
+    //       pathname: "/penjualan/transaksi",
+    //       title: "Transaksi",
+    //     },
+    //     {
+    //       icon: "ChevronRight",
+    //       pathname: "/penjualan/data-pembeli",
+    //       title: "Pelanggan",
+    //     },
+    //   ],
+    // },
     // {
     //   icon: "Files",
     //   title: "Penjualan",
@@ -144,11 +144,11 @@ const initialState: SideMenuState = {
     //     },
     //   ],
     // },
-    // {
-    //   icon: "Files",
-    //   title: "Penjualan",
-    //   pathname: "/penjualan",
-    // },
+    {
+      icon: "Files",
+      title: "Penjualan",
+      pathname: "/penjualan",
+    },
     {
       icon: "Layers",
       title: "Stok Barang",

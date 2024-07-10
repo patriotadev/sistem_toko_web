@@ -16,8 +16,6 @@ import DetailPengguna from "../pages/Pengguna/detail";
 import Toko from "../pages/Toko";
 import Penjualan from "../pages/Penjualan";
 import PaymentAccount from "../pages/PaymentAccount";
-import Transaksi from "../pages/Penjualan_New/Transaksi";
-import FormTransaksi from "../pages/Penjualan_New/Transaksi/FormTransaksi";
 
 function Router() {
     const routes = [
@@ -114,20 +112,6 @@ function Router() {
                     element: 
                     <AuthGuard>
                         <PaymentAccount />
-                    </AuthGuard>
-                },
-                {
-                    path: '/penjualan/transaksi',
-                    element: 
-                    <AuthGuard>
-                        <Transaksi />
-                    </AuthGuard>
-                },
-                {
-                    path: '/penjualan/transaksi/form',
-                    element: 
-                    <AuthGuard>
-                        <FormTransaksi />
                     </AuthGuard>
                 },
             ]

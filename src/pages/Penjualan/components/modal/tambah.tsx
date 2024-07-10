@@ -28,7 +28,6 @@ type FormInputs = {
     namaPelanggan: string
     alamatPelanggan: string
     kontakPelanggan: string
-    // tokoId: string
 }
 
 const TambahModal = ({

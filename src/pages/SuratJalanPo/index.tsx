@@ -151,19 +151,18 @@ const BarangPoModal = ({
   const [hiddenItem, setHiddenItem] = useState<string[]>([]);
 
   const onSubmit: SubmitHandler<BarangPoInputs> = (data) => {
-    setStep(3);
-    console.log(data, ">>> barang data");
     const valueData: BarangPoInputs[] = [];
+    const errors = [];
     if (selectedPo) {
       if (barangPoData && barangPoData?.length > 0) {
         for (let index = 0; index < barangPoData.length; index++) {
           if (Number(data.qty[index].values) > Number(barangPoData[index].qty)) {
-            alert(`Jumlah tidak boleh lebih dari jumlah PO (${Number(barangPoData[index].qty)})`);
-            return false;
+            errors.push(index);
+            alert(`Jumlah ${barangPoData[index].nama} tidak boleh lebih dari jumlah PO (${Number(barangPoData[index].qty)})`);
           }
           if (Number(data.qty[index].values) < 1) {
+            errors.push(index);
             alert(`Jumlah tidak boleh kurang dari 1`);
-            return false;
           }
           if(!hiddenItem.includes(data.id[index].values)) {
             StokModule.getOneById(data.stokBarangId[index].values).then((res: AxiosResponse) => {
@@ -178,10 +177,13 @@ const BarangPoModal = ({
                   step: data.step[index].values,
                   createdBy: userInfo.name,
                 });
-                setBarangPoList(valueData as BarangSuratJalanPo[]);
-                setBarangPoData([]);
-                setBarangPoOptions([]);
-                setIsOpen(false);
+                if (errors.length < 1) {
+                  setStep(3);
+                  setBarangPoList(valueData as BarangSuratJalanPo[]);
+                  setBarangPoData([]);
+                  setBarangPoOptions([]);
+                  setIsOpen(false);
+                }
             });
           }
         }
@@ -259,6 +261,7 @@ const BarangPoModal = ({
         setIsOpen(false);
       }
     }
+    console.log(errors);
   }
 
   const fetchBarangPoData = (search: string | undefined, page: number, perPage: number, poId: string | undefined) => {

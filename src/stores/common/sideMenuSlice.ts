@@ -52,6 +52,11 @@ const initialState: SideMenuState = {
             title: "Toko",
             pathname: "/toko",
           },
+          {
+            icon: "ChevronRight",
+            title: "Payment Account",
+            pathname: "/payment-account",
+          },
       ]
     },
     {
@@ -78,6 +83,27 @@ const initialState: SideMenuState = {
           icon: "ChevronRight",
           pathname: "/tanda-terima-nota",
           title: "Tanda Terima Nota",
+        },
+      ],
+    },
+    {
+      icon: "Files",
+      title: "Penjualan - New",
+      subMenu: [
+        {
+          icon: "ChevronRight",
+          pathname: "/penjualan/laporan",
+          title: "Laporan",
+        },
+        {
+          icon: "ChevronRight",
+          pathname: "/penjualan/transaksi",
+          title: "Transaksi",
+        },
+        {
+          icon: "ChevronRight",
+          pathname: "/penjualan/data-pembeli",
+          title: "Pelanggan",
         },
       ],
     },
@@ -123,11 +149,11 @@ const initialState: SideMenuState = {
     //   title: "Penjualan",
     //   pathname: "/penjualan",
     // },
-    // {
-    //   icon: "Layers",
-    //   title: "Stok Barang",
-    //   pathname: "/stok",
-    // },
+    {
+      icon: "Layers",
+      title: "Stok Barang",
+      pathname: "/stok",
+    },
     ],
 };
 

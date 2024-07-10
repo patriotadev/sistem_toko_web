@@ -218,6 +218,12 @@ function Main() {
                   JUMLAH TOTAL
                 </Table.Th>
                 <Table.Th className="text-start border-b-0 whitespace-nowrap">
+                  METODE PEMBAYARAN
+                </Table.Th>
+                <Table.Th className="text-start border-b-0 whitespace-nowrap">
+                  STATUS PEMBAYARAN
+                </Table.Th>
+                <Table.Th className="text-start border-b-0 whitespace-nowrap">
                   DIBUAT PADA
                 </Table.Th>
                 <Table.Th className="text-start border-b-0 whitespace-nowrap">
@@ -238,6 +244,13 @@ function Main() {
                     {
                       thousandLimiter(Number(item.PembayaranPenjualan[0]?.totalPembayaran), 'Rp')
                     }
+                  </Table.Td>
+                  <Table.Td className="first:rounded-l-md last:rounded-r-md text-start bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
+                    {item?.PembayaranPenjualan[0]?.metode}
+                  </Table.Td>
+                  <Table.Td className="first:rounded-l-md last:rounded-r-md text-start bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
+                    {item.PembayaranPenjualan[0]?.totalPembayaran === item.PembayaranPenjualan[0]?.jumlahBayar ? 
+                      <span className='bg-success py-1 px-2 rounded-md text-white w-fit'>Lunas</span> : <span className='bg-danger py-1 px-2 rounded-md text-white w-fit'>Belum Lunas</span> }
                   </Table.Td>
                   <Table.Td className="first:rounded-l-md last:rounded-r-md text-start bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
                     {moment(item.createdAt).format('DD MMMM YYYY')}

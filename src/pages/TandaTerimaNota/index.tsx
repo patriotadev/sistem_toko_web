@@ -931,6 +931,7 @@ function Main () {
     NotaModule.get(params)
     .then((res: AxiosResponse) => {
       const result = res.data;
+      console.log(result.data);
       setNotaList(result.data);
       // setPage(result.document.currentPage);
       // setPerPage(result.document.perPage);
@@ -1105,6 +1106,9 @@ function Main () {
                   PROJECT
                 </Table.Th>
                 <Table.Th className="text-start border-b-0 whitespace-nowrap">
+                  NO. INVOICE
+                </Table.Th>
+                <Table.Th className="text-start border-b-0 whitespace-nowrap">
                   DIBUAT OLEH
                 </Table.Th>
                 <Table.Th className="text-start border-b-0 whitespace-nowrap">
@@ -1135,6 +1139,9 @@ function Main () {
                   </Table.Td>
                   <Table.Td className="first:rounded-l-md last:rounded-r-md text-start bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
                     {item?.Project?.nama}
+                  </Table.Td>
+                  <Table.Td className="first:rounded-l-md last:rounded-r-md text-start bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
+                    {item?.Invoice[0]?.InvoicePo.nomor}
                   </Table.Td>
                   <Table.Td className="first:rounded-l-md last:rounded-r-md text-start bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
                     {item.createdBy}

@@ -81,6 +81,18 @@ function Main() {
                           </div>
                         </Tab.Button>
                     </Tab>
+                    <Tab>
+                        <Tab.Button className="w-full py-2 text-xl font-semibold" as="button">
+                          <div className="h-56 w-64 md:w-80 rounded-md flex items-center gap-2 justify-center">
+                            <div className="h-full w-72 flex justify-center items-center -mt-6">
+                             <img src={PoImage} width={100} height={100} />
+                            </div>
+                            <p className="text-2xl w-full">
+                              Penjualan
+                            </p>
+                          </div>
+                        </Tab.Button>
+                    </Tab>
               </Tab.List>
               <Tab.Panels className="mt-5">
                   <Tab.Panel className="leading-relaxed">

@@ -157,10 +157,10 @@ const BarangPoModal = ({
     const valueData: BarangPoInputs = [];
     const stokPo = [];
     for (let index = 0; index < barangList.length; index++) {
-      // if (getValues(`nama.${index}.values`) === undefined) {
-      //   console.log('nama kosonggg');
-      //   setError(`nama.${index}.values`, { type: 'manual', message: 'Nama barang tidak boleh kosong' });
-      // }
+      if (getValues(`nama.${index}.values`) === undefined) {
+        console.log('nama kosonggg');
+        setError(`nama.${index}.values`, { type: 'manual', message: 'Nama barang tidak boleh kosong' });
+      }
       const tempStokId: string = nanoid();
       if (data.stokBarangId[index].values === undefined || data.stokQty[index].values < data.qty[index].values) {
         stokPo.push({
@@ -206,7 +206,7 @@ const BarangPoModal = ({
     const optionsList: StokOptionsProps[] = [];
     stokList.map((item) => {
       optionsList.push({
-        label: `${item?.nama}`,
+        label: `[${item?.kode}] - ${item?.nama}`,
         value: item?.kode,
         satuan: item?.satuan,
         harga: item?.hargaJual,
@@ -282,9 +282,9 @@ const BarangPoModal = ({
                                 setValue(`nama.${i}.values`, e?.label);
                                 setValue(`kode.${i}.values`, e?.value);
                                 setValue(`stokQty.${i}.values`, e?.qty);
-                                // setValue(`qty.${i}.values`, e?.qty);
+                                setValue(`qty.${i}.values`, e?.qty);
                                 setValue(`satuan.${i}.values`, e?.satuan);
-                                // setValue(`harga.${i}.values`, e?.harga);
+                                setValue(`harga.${i}.values`, e?.harga);
                                 setValue(`stokBarangId.${i}.values`, e?.stokBarangId);
                               }}
                               options={stokOptions}

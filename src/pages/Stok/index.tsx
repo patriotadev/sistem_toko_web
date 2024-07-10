@@ -27,6 +27,7 @@ import TabStatus from "./enum/tab.enum";
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import FormInputCurrency from "../../components/Custom/FormInputCurrency";
+import Select, { SingleValue } from 'react-select';
 
 type TambahBarangModalProps = {
     handleReloadStok: () => void
@@ -77,6 +78,11 @@ type StokBarangInputs = {
     isPo: boolean
 }
 
+type SingleSelectType = {
+  label: string
+  value: string
+}
+
 const TambahBarangModal = ({
   handleReloadStok,
   tokoList,
@@ -85,16 +91,21 @@ const TambahBarangModal = ({
 }: TambahBarangModalProps) => {
     const userInfo = useAppSelector(SelectUserInfo);
     const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
+    const [selectedLokasi, setSelectedLokasi] = useState<SingleValue<SingleSelectType>>();
+    const [tokoOptions, setTokoOptions] = useState<SingleSelectType[]>([]);
     const formSchema = Yup.object().shape({
       nama: Yup.string().required('Nama barang tidak boleh kosong'),
       jumlah: Yup.number().typeError('Input jumlah harus tipe angka / numeric').min(0, 'Jumlah tidak boleh kurang dari 0').required('Jumlah barang tidak boleh kosong'),
       satuan: Yup.string().required('Satuan barang tidak boleh kosong'),
       hargaModal: Yup.number().typeError('Input harga modal harus tipe angka / numeric').min(0, 'Harga modal tidak boleh kurang dari 0').required('Harga modal barang tidak boleh kosong'),
       hargaJual: Yup.number().typeError('Input harga jual harus tipe angka / numeric').min(0, 'Harga jual tidak boleh kurang dari 0').required('Harga jual barang tidak boleh kosong'),
+      tokoId: Yup.string().required('Lokasi tidak boleh kosong'),
     });
     const { register, handleSubmit, setValue, getValues, reset, watch, formState: {errors} } = useForm<Omit<StokBarangInputs, 'id'>>({
       resolver: yupResolver(formSchema)
     });
+
+    console.log(tokoList);  
 
     const onSubmit: SubmitHandler<Omit<StokBarangInputs, 'id'>> = (data, event) => {
         setIsSubmitLoading(true);
@@ -106,7 +117,7 @@ const TambahBarangModal = ({
             hargaModal: Number(data.hargaModal),
             hargaJual: Number(data.hargaJual),
             createdBy: data.createdBy,
-            tokoId: userInfo.tokoId,
+            tokoId: data.tokoId,
         }
         StokModule.create(payload)
         .then((res: AxiosResponse) => {
@@ -123,6 +134,21 @@ const TambahBarangModal = ({
         .catch((error) => toast.error(error.message))
         .finally(() => setIsSubmitLoading(false));
     }
+
+    console.log(tokoOptions)
+
+    useEffect(() => {
+      if (isModalOpen) {
+        const temp: SingleSelectType[] = [];
+        tokoList.forEach((item) => {
+          temp.push({
+            value: item?.id,
+            label: item?.description
+          });
+        });
+        setTokoOptions(temp);
+      }
+    }, [isModalOpen])
 
     useEffect(() => {
       watch('jumlah');
@@ -209,6 +235,25 @@ const TambahBarangModal = ({
                                 {errors.hargaJual && 
                                   <div className="mt-2 text-danger">
                                       {errors.hargaJual.message}
+                                  </div>
+                                }
+                            </div>
+                            <div className="w-full">
+                                <FormLabel htmlFor="regular-form-1">Lokasi</FormLabel>
+                                {/* <FormInput {...register('hargaJual', {required: 'Harga jual barang tidak boleh kosong'})} autoComplete="off" id="regular-form-1" type="number" min="0" placeholder="" className={`${errors.hargaJual && "border-danger"}`} /> */}
+                                <Select
+                                  options={tokoOptions}
+                                  onChange={(e) => {
+                                    if (e) {
+                                      setSelectedLokasi(e);
+                                      setValue('tokoId', e.value);
+                                    }
+                                  }}
+                                  value={selectedLokasi}
+                                />
+                                {errors.tokoId && 
+                                  <div className="mt-2 text-danger">
+                                      {errors.tokoId.message}
                                   </div>
                                 }
                             </div>
@@ -623,6 +668,8 @@ function Main () {
     fetchStokData(search, page, perPage, selectedToko, tab);
   }, [isRefreshData, page, perPage, tab]);
 
+  console.log(totalCount);
+
   return (
     <>
       <Toaster/>
@@ -904,12 +951,12 @@ function Main () {
             {/* END: Data List */}
               {/* BEGIN: Pagination */}
               <PaginationCustom
-              page={page}
-              setPage={setPage}
-              perPage={perPage}
-              setPerPage={setPerPage}
-              totalPages={totalPages}
-              totalCount={totalCount}
+                page={page}
+                setPage={setPage}
+                perPage={perPage}
+                setPerPage={setPerPage}
+                totalPages={totalPages}
+                totalCount={totalCount}
             />
             {/* END: Pagination */}
                 </Tab.Panel>

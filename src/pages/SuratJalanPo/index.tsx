@@ -1698,7 +1698,7 @@ const ActionButtons = ({
         <Lucide icon="View" className="w-4 h-4 mr-1" />{" "}
         Detail
       </a>
-      {/* <a
+      <a
           className="flex items-center mr-3"
           href="#"
           onClick={(event) => {
@@ -1707,7 +1707,7 @@ const ActionButtons = ({
           }}
         >
       <Lucide icon="RotateCcw" className="w-4 h-4 mr-1" /> Batal
-      </a> */}
+      </a>
       <a className="flex items-center mr-3" href="#" onClick={handlePrint}>
         <Lucide icon="Printer" className="w-4 h-4 mr-1" />{" "}
         Print

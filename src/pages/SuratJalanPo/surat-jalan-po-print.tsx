@@ -14,19 +14,19 @@ const SuratJalanPoPrint = forwardRef((props: PropsType, ref: any) => {
   return (
     <div ref={ref} style={{fontSize: '0.7rem'}}>
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'start'}}>
-        <div style={{display: 'flex', gap: '25px'}}>
-          <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
+        <div style={{display: 'flex', gap: '0px'}}>
+          <div style={{display: 'flex', flexDirection: 'column', gap: '0px'}}>
             <span>{props?.initialValues?.Pt?.nama}</span>
             <span>{props?.initialValues?.Po?.noPo[0] !== '[' ? `NO. PO : ${props?.initialValues?.Po?.noPo}` : ''}</span>
-            <span style={{marginTop: '30px'}}>KETERANGAN :</span>
+            <span style={{marginTop: '10px'}}>KETERANGAN :</span>
           </div>
         </div>
-        <div style={{display: 'flex', flexDirection: 'column', gap: '5px', justifyContent: 'center', position: 'absolute', top: '20', left: '0', right: '0'}}>
-          <span style={{textAlign: 'center', fontSize: '1.5rem', fontWeight: 'bold', textDecoration: 'underline'}}>SURAT JALAN</span>
-          <span style={{textAlign: 'center', fontSize: '1.1rem'}}>{props.initialValues.nomor}</span>
+        <div style={{display: 'flex', flexDirection: 'column', gap: '0px', justifyContent: 'center', position: 'absolute', top: '20', left: '0', right: '0'}}>
+          <span style={{textAlign: 'center', fontSize: '1.1rem', fontWeight: 'bold'}}>SURAT JALAN</span>
+          <span style={{textAlign: 'center', fontSize: '0.8rem'}}>{props.initialValues.nomor}</span>
         </div>
-        <div style={{display: 'flex', flexDirection: 'column', gap: '10px', width: '200px'}}>
-          <div style={{display: 'flex', flexDirection: 'column', gap: '5px'}}>
+        <div style={{display: 'flex', flexDirection: 'column', gap: '0px', width: '200px'}}>
+          <div style={{display: 'flex', flexDirection: 'column', gap: '0px'}}>
             <span>{userInfo.tokoCity}, {`${moment(props.initialValues.tanggal).format('DD-MM-YYYY')}`}</span>
             <div style={{display: 'flex', flexDirection:'column'}}>
               <span>{userInfo.tokoName}</span>
@@ -34,7 +34,7 @@ const SuratJalanPoPrint = forwardRef((props: PropsType, ref: any) => {
               <span>{userInfo.tokoContact}</span>
             </div>
           </div>
-          <div style={{display: 'flex', gap:'20px'}}>
+          <div style={{display: 'flex', gap: '0px'}}>
             {/* <span>Jatuh Tempo : 25-11-2023</span>
             <span>Term: 10 Hari</span> */}
             {/* <span>Hal. 1/1</span> */}
@@ -45,13 +45,13 @@ const SuratJalanPoPrint = forwardRef((props: PropsType, ref: any) => {
       <div style={{marginTop: '25px'}}>
         <table>
           <thead style={{borderTop: 'solid 1px black', borderBottom: 'solid 1px black', width: '100%'}}>
-            <th style={{textAlign: 'start', padding: '5px 0px'}}>
-              <td style={{width: '10vw'}}>
+            <th style={{textAlign: 'start', padding: '0px 0px'}}>
+              <td style={{width: '5vw'}}>
                 No.
               </td>
             </th>
             <th style={{textAlign: 'start'}}>
-              <td style={{width: '25vw'}}>
+              <td style={{width: '45vw'}}>
                 NAMA BARANG
               </td>
             </th>
@@ -70,10 +70,10 @@ const SuratJalanPoPrint = forwardRef((props: PropsType, ref: any) => {
             {
               props.initialValues.BarangSuratJalanPo.map((item, index) => 
               <tr>
-              <td style={{width: '25vw'}}>
+              <td style={{width: '5vw'}}>
                 {index + 1}.
               </td>
-              <td style={{width: '25vw'}}>
+              <td style={{width: '45vw'}}>
                 {item.nama}
               </td>
               <td style={{width: '25vw'}}>
@@ -88,26 +88,26 @@ const SuratJalanPoPrint = forwardRef((props: PropsType, ref: any) => {
         </table>
       </div>
       <div>
-        <div style={{display: 'flex', bottom: '0px', height: '30vh', borderTop: 'solid 1px black', paddingTop: '30px'}}>
+        <div style={{display: 'flex', bottom: '0px', height: '30vh', borderTop: 'solid 1px black', paddingTop: '10px'}}>
           <div style={{display: 'flex', flexDirection: 'column', width: '70vw'}}>
-            <div style={{display: 'flex', flexDirection: 'column'}}>
+            <div style={{display: 'flex', flexDirection: 'column', fontSize: '0.6rem'}}>
               <span>
                 NB :
               </span>
               <span>
-                - Surat Jalan ini merupakan bukti resmi penerimaan barang.
+                1. SURAT JALAN INI MERUPAKAN BUKTI RESMI PENERIMAAN BARANG
               </span>
               <span>
-                - Surat Jalan ini merupakan lampiran invoice penjualan.
+                2. SURAT JALAN INI MERUPAKAN LAMPIRAN INVOICE PENJUALAN
               </span>
             </div>
-            <div style={{display: 'flex', justifyContent: 'space-between', width: '70vw', paddingTop: '30px'}}>
+            <div style={{display: 'flex', justifyContent: 'end', width: '90vw', paddingTop: '30px', gap: '50px'}}>
                 <div style={{height: '80px', width: '120px', borderBottom: 'solid 1px black', textAlign: 'center'}}>
                   <span>ADMIN SALES</span>
                 </div>
-                <div style={{height: '80px', width: '120px', borderBottom: 'solid 1px black', textAlign: 'center'}}>
+                {/* <div style={{height: '80px', width: '120px', borderBottom: 'solid 1px black', textAlign: 'center'}}>
                   <span>KEPALA GUDANG</span>
-                </div>
+                </div> */}
                 <div style={{height: '80px', width: '120px', borderBottom: 'solid 1px black', textAlign: 'center'}}>
                   <span>SUPIR</span>
                 </div>

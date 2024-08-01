@@ -8,7 +8,7 @@ function Main() {
   return (
     <>
       <h2 className="mt-10 text-lg font-medium intro-y">Transaksi Penjualan</h2>
-      <div className="flex justify-center max-h-screen py-10 items-center shadow-md rounded-md bg-slate-50 mt-10">
+      <div className="flex justify-center max-h-screen py-10 items-center shadow-md rounded-md bg-slate-50 mt-10 intro-y">
             <div className="flex flex-col gap-10 items-center">
                 <Lucide icon="ShoppingCart" className="w-20 h-20 text-slate-300" />
                 <Link to={'/penjualan/transaksi/form'}>

@@ -16,20 +16,20 @@ const TandaTerimaNotaPrint = forwardRef((props: PropsType, ref: any) => {
   return (
     <div ref={ref} style={{fontSize: '0.7rem'}}>
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'start'}}>
-        <div style={{display: 'flex', gap: '25px'}}>
-          <div style={{display: 'flex', flexDirection: 'column', gap: '10px', width: '200px'}}>
+        <div style={{display: 'flex', gap: '0px'}}>
+          <div style={{display: 'flex', flexDirection: 'column', gap: '0px', width: '200px'}}>
             <span>{props?.initialValues?.Pt?.nama}</span>
             <span>{props?.initialValues?.Pt?.alamat}</span>
             <span>{props?.initialValues?.Project?.nama[0] !== '[' ? `PROJECT : ${props?.initialValues?.Project?.nama}` : ''}</span>
-            <span style={{marginTop: '30px'}}>KETERANGAN :</span>
+            <span style={{marginTop: '10px'}}>KETERANGAN :</span>
           </div>
         </div>
-        <div style={{display: 'flex', flexDirection: 'column', gap: '5px', justifyContent: 'center', position: 'absolute', top: '20', left: '0', right: '0'}}>
-          <span style={{textAlign: 'center', fontSize: '1.5rem', fontWeight: 'bold', textDecoration: 'underline'}}>TANDA TERIMA NOTA</span>
-          <span style={{textAlign: 'center', fontSize: '1.1rem'}}>{props.initialValues.nomor}</span>
+        <div style={{display: 'flex', flexDirection: 'column', gap: '0px', justifyContent: 'center', position: 'absolute', top: '20', left: '0', right: '0'}}>
+          <span style={{textAlign: 'center', fontSize: '1.1rem', fontWeight: 'bold'}}>TANDA TERIMA NOTA</span>
+          <span style={{textAlign: 'center', fontSize: '0.8rem'}}>{props.initialValues.nomor}</span>
         </div>
-        <div style={{display: 'flex', flexDirection: 'column', gap: '10px', width: '200px'}}>
-          <div style={{display: 'flex', flexDirection: 'column', gap: '5px'}}>
+        <div style={{display: 'flex', flexDirection: 'column', gap: '0px', width: '200px'}}>
+          <div style={{display: 'flex', flexDirection: 'column', gap: '0px'}}>
             <span>{userInfo.tokoCity}, {`${moment(props.initialValues.createdAt).format('DD-MM-YYYY')}`}</span>
             <div style={{display: 'flex', flexDirection:'column'}}>
               <span>{userInfo.tokoName}</span>
@@ -37,7 +37,7 @@ const TandaTerimaNotaPrint = forwardRef((props: PropsType, ref: any) => {
               <span>{userInfo.tokoContact}</span>
             </div>
           </div>
-          <div style={{display: 'flex', gap:'20px'}}>
+          <div style={{display: 'flex', gap:'0px'}}>
             {/* <span>Jatuh Tempo : 25-11-2023</span>
             <span>Term: 10 Hari</span> */}
             {/* <span>Hal. 1/1</span> */}
@@ -48,13 +48,13 @@ const TandaTerimaNotaPrint = forwardRef((props: PropsType, ref: any) => {
       <div style={{marginTop: '25px'}}>
         <table>
           <thead style={{borderTop: 'solid 1px black', borderBottom: 'solid 1px black', width: '100%'}}>
-            <th style={{textAlign: 'start', padding: '5px 0px'}}>
-              <td style={{width: '10vw'}}>
+            <th style={{textAlign: 'start', padding: '0px 0px'}}>
+              <td style={{width: '5vw'}}>
                 No.
               </td>
             </th>
             <th style={{textAlign: 'start'}}>
-              <td style={{width: '25vw'}}>
+              <td style={{width: '40vw'}}>
                 NO. INVOICE
               </td>
             </th>
@@ -68,10 +68,10 @@ const TandaTerimaNotaPrint = forwardRef((props: PropsType, ref: any) => {
             {
               props.initialValues.Invoice.map((item: any, index: number) => 
               <tr>
-              <td style={{width: '20vw'}}>
+              <td style={{width: '5vw'}}>
                 {index + 1}.
               </td>
-              <td style={{width: '40vw'}}>
+              <td style={{width: '65vw'}}>
                 {item?.InvoicePo?.nomor}
               </td>
               <td style={{width: '40vw'}}>
@@ -83,7 +83,7 @@ const TandaTerimaNotaPrint = forwardRef((props: PropsType, ref: any) => {
         </table>
       </div>
       <div>
-        <div style={{display: 'flex', bottom: '0px', height: '30vh', borderTop: 'solid 1px black', paddingTop: '30px'}}>
+        <div style={{display: 'flex', bottom: '0px', height: '30vh', borderTop: 'solid 1px black', paddingTop: '10px'}}>
           <div style={{display: 'flex', flexDirection: 'column', width: '70vw'}}>
             <div style={{display: 'flex', flexDirection: 'column'}}>
               <span style={{marginBottom: '8px', marginTop: '12'}}>
@@ -101,7 +101,7 @@ const TandaTerimaNotaPrint = forwardRef((props: PropsType, ref: any) => {
             <div style={{width: '24vw', textAlign: 'start', alignSelf: 'end'}}>
               <span>TOTAL : {thousandLimiter(props?.initialValues?.totalJumlahInvoice, 'Rp')}</span>
             </div>
-            <div style={{display: 'flex', justifyContent: 'space-between', width: '40vw', paddingTop: '80px'}}>
+            <div style={{display: 'flex', justifyContent: 'start', width: '40vw', paddingTop: '20px', gap: '50px'}}>
                 <div style={{height: '80px', width: '120px', borderBottom: 'solid 1px black', textAlign: 'center'}}>
                   <span>ADMIN SALES</span>
                 </div>

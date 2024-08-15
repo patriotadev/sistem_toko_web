@@ -18,7 +18,7 @@ const SuratJalanPoPrint = forwardRef((props: PropsType, ref: any) => {
           <div style={{display: 'flex', flexDirection: 'column', gap: '0px'}}>
             <span>{userInfo.tokoCity}, {`${moment(props.initialValues.tanggal).format('DD-MM-YYYY')}`}</span>
             <div style={{display: 'flex', flexDirection:'column'}}>
-              <span>TOKO {userInfo.tokoName}</span>
+              <span style={{ fontWeight: 'bolder' }}>TOKO {userInfo.tokoName}</span>
               <span>{userInfo.tokoAddress}</span>
               <span>{userInfo.tokoContact}</span>
             </div>

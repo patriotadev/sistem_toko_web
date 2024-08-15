@@ -805,9 +805,16 @@ const ActionButtons = ({
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
   const deleteButtonRef = useRef(null);
   const printRef = useRef<any>(null);
+  const [dimensions, setDimensions] = useState({ width: 210, height: 140 });
   const handlePrint = useReactToPrint({
     documentTitle: `Tanda Terima Nota - ${initialValues.nomor}`,
     content: () => printRef.current,
+    pageStyle: `@media print {
+      @page {
+        size: ${dimensions.width}mm ${dimensions.height}mm;
+        margin: 0;
+      }
+    }`,
   });
 
   return (

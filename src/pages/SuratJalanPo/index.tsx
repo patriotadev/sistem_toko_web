@@ -1641,7 +1641,14 @@ const ActionButtons = ({
   const [invoiceConfirmationModal, setInvoiceConfirmationModal] = useState(false);
   const invoiceButtonRef = useRef(null);
   const printRef = useRef<any>(null);
+  const [dimensions, setDimensions] = useState({ width: 210, height: 140 });
   const handlePrint = useReactToPrint({
+    pageStyle: `@media print {
+      @page {
+        size: ${dimensions.width}mm ${dimensions.height}mm;
+        margin: 0;
+      }
+    }`,
     documentTitle: `Surat Jalan - ${initialValues.nomor}`,
     content: () => printRef.current,
   });
